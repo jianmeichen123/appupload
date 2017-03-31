@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	 xmlns:mvc="http://www.springframework.org/schema/mvc"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx" 
+     xmlns:p="http://www.springframework.org/schema/p"
+     xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xsi:schemaLocation="
+   http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/mvc
+   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/jdbc 
+   http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+   http://www.springframework.org/schema/tx 
+   http://www.springframework.org/schema/tx/spring-tx.xsd
+   http://www.springframework.org/schema/aop 
+   http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+<!--  	<bean id="propertyConfigure" 
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties"></property>
+	</bean> -->
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="${driverClassName}"></property>
+		<property name="url" value="${url}"/> 
+		<property name="username" value="${username}"/>
+		<property name="password" value="${password}"/>
+	</bean>
+	
+	<!-- spring mybatis 
+		<property name="configLocation" value="classpath:sqlMapConfig.xml"></property>-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="typeAliasesPackage" value="com.galaxy.appupload.beans"></property>
+		<property name="mapperLocations" value="classpath*:com/galaxy/appupload/mapper/*.xml"></property>
+	</bean>
+	 
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.galaxy.appupload.dao"></property>
+	</bean>
+	
+
+ 	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" 
+				rollback-for="Exception"/>  
+				
+			<tx:method name="get*"
+				read-only="true"/>
+				
+			<tx:method name="add*"
+				rollback-for="Exception"
+				read-only="false"/>
+			
+		</tx:attributes>
+	</tx:advice>
+	
+
+	<aop:config>
+		<aop:pointcut id="beanPointcut" expression="execution(* *..service..*.*(..))"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="beanPointcut"/>
+	</aop:config>
+	 
+	
+	
+</beans>

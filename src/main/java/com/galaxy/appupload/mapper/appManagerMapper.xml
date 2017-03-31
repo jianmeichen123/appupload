@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.galaxy.appupload.dao.AppManagerDao">
+	<!-- 保存应用信息 -->
+	<insert id="saveApplication" parameterType="ApplicationInfoBean" keyColumn="id">
+		insert into applicationinfo(
+			id,
+			app_code,
+			system_type,
+			logo_big_file,
+			logo_small_file
+		) values(
+			#{id},
+			#{appcode},
+			#{systemType},
+			#{logoBigFile},
+			#{logoSmallFile}
+		)
+	</insert>
+	
+	<!-- 更新应用信息 -->
+	<update id="updateApplication" parameterType="java.util.Map">
+		update applicationinfo
+	    <set>
+	      <if test="small != null and small!='' ">logo_small_file = #{small},</if>
+	      <if test="big != null and big!='' ">logo_big_file = #{big},</if>
+	    </set>
+	    where id = #{id}
+	</update>
+	
+	<!-- 保存版本信息 -->
+	<insert id="saveVsersion" parameterType="VersionInfoBean" keyColumn="id">
+		insert into versioninfo(
+			id,
+			version_no,
+			create_time,
+			file_name,
+			file_path,
+			update_log,
+			app_id,
+			version_status,
+			qr_code
+		) values(
+			#{id},
+			#{versionNo},
+			#{createTime},
+			#{filename},
+			#{filepath},
+			#{updatelog},
+			#{appid},
+			#{versionStatus},
+			#{qrCode}
+		)
+	</insert>
+	
+	<!-- 更新版本信息 -->
+	<update id="updateVsersion" parameterType="VersionInfoBean">
+		update versioninfo
+	    <set>
+	      <if test="createTime != null and createTime!='' ">create_time = #{createTime},</if>
+	      <if test="filename != null and filename!='' ">file_name = #{filename},</if>
+	      <if test="filepath != null and filepath!='' ">file_path = #{filepath},</if>
+	      <if test="updatelog != null and updatelog!='' ">update_log = #{updatelog},</if>
+	      <if test="qrCode != null and qrCode!='' ">qr_code = #{qrCode},</if>
+	    </set>
+	    where app_id = #{appid} and version_no=#{versionNo}
+	</update>
+	
+	<!-- 下载 -->
+	<select id="getDownloadFile" parameterType="string" resultType="VersionInfoBean" resultMap="versionInfoBeanMap">
+		select * from versionInfo where app_id=#{0} and version_no=#{1};
+	</select>
+	<resultMap type="VersionInfoBean" id="versionInfoBeanMap">
+		<id column="id" property="id"/>
+		<result column="version_no" property="versionNo"/>
+		<result column="create_time" property="createTime"></result>
+		<result column="file_name" property="filename"/>
+		<result column="file_path" property="filepath"/>
+		<result column="update_log" property="updatelog"/>
+		<result column="app_id" property="appid"/>
+	</resultMap>
+	
+	<!-- 获取应用名称list -->
+	<select id="getAppList" parameterType="string" resultType="ApplicationInfoBean" resultMap="applicationInfoBeanMap">
+		select DISTINCT(app_code) from applicationinfo ;
+	</select>
+	<resultMap type="ApplicationInfoBean" id="applicationInfoBeanMap">
+		<result column="app_code" property="appcode"/>
+	</resultMap>
+	
+	<!-- 根据应用名称和系统型号，获取appid-->
+	<select id="getAppId" parameterType="string" resultType="java.lang.String" resultMap="ResultOfString">
+		select id from applicationinfo where app_code=#{0} and system_type=#{1};
+	</select>
+ 	<resultMap type="java.lang.String" id="ResultOfString">
+		<result column="id" property="id"/>
+	</resultMap>
+	
+	<!-- 获取系统类型list-->
+	<select id="getSysTypeList" parameterType="string" resultType="ApplicationInfoBean" resultMap="applicationInfoBeanMaps">
+		select * from applicationinfo where app_code=#{appname} ;
+	</select>
+	<resultMap type="ApplicationInfoBean" id="applicationInfoBeanMaps">
+		<id column="id" property="id"/>
+		<result column="app_code" property="appcode"/>
+		<result column="system_type" property="systemType"></result>
+		<result column="logo_big_file" property="logoBigFile"/>
+		<result column="logo_small_file" property="logoSmallFile"/>
+	</resultMap>
+	
+	<!-- 获取最新版本信息-->
+	<select id="getNewVersionInfo" parameterType="java.util.Map" resultType="VersionInfoBean" resultMap="newVersion">
+		SELECT * FROM versioninfo WHERE app_id=#{appid} and version_status=#{appcode} ORDER BY version_no desc LIMIT 1;
+	</select>
+	<resultMap type="VersionInfoBean" id="newVersion">
+		<id column="id" property="id"/>
+		<result column="version_no" property="versionNo"/>
+		<result column="create_time" property="createTime"></result>
+		<result column="file_name" property="filename"/>
+		<result column="file_path" property="filepath"/>
+		<result column="update_log" property="updatelog"/>
+		<result column="app_id" property="appid"/>
+		<result column="qr_code" property="qrCode"/>
+	</resultMap>
+	
+	<!-- 获取版本号list-->
+	<select id="getVersionList" parameterType="string" resultType="VersionInfoBean" resultMap="versionListMap">
+		select * from versioninfo where app_id=#{0} and version_status=#{1};
+	</select>
+	<resultMap type="VersionInfoBean" id="versionListMap">
+		<id column="id" property="id"/>
+		<result column="version_no" property="versionNo"/>
+		<result column="create_time" property="createTime"></result>
+		<result column="file_name" property="filename"/>
+		<result column="file_path" property="filepath"/>
+		<result column="update_log" property="updatelog"/>
+		<result column="app_id" property="appid"/>
+	</resultMap>
+	
+	<!-- 版本号，版本状态，appid 是否存在数据 -->
+	<select id="isExistVersion" parameterType="java.util.Map" resultType="VersionInfoBean" resultMap="isExistVersionMap">
+		select * from versionInfo where app_id=#{appid} and version_no=#{version} and version_status=#{vstatus};
+	</select>
+	<resultMap type="VersionInfoBean" id="isExistVersionMap">
+		<id column="id" property="id"/>
+		<result column="version_no" property="versionNo"/>
+		<result column="create_time" property="createTime"></result>
+		<result column="file_name" property="filename"/>
+		<result column="file_path" property="filepath"/>
+		<result column="update_log" property="updatelog"/>
+		<result column="app_id" property="appid"/>
+		<result column="version_status" property="versionStatus"/>
+		<result column="qr_code" property="qrCode"/>
+	</resultMap>
+	
+	<!-- 获取版本状态list -->
+	<select id="getStatusList" parameterType="string" resultType="VersionInfoBean" resultMap="statusListMap">
+		SELECT DISTINCT(version_status) FROM versioninfo WHERE app_id=#{appid};
+	</select>
+	<resultMap type="VersionInfoBean" id="statusListMap">
+		<result column="version_status" property="versionStatus"/>
+	</resultMap>
+	
+	<!-- 获取系统类型list-->
+	<select id="getAppBean" parameterType="string" resultType="ApplicationInfoBean" resultMap="application">
+		select * from applicationinfo where app_code=#{0} and system_type=#{1};
+	</select>
+	<resultMap type="ApplicationInfoBean" id="application">
+		<id column="id" property="id"/>
+		<result column="app_code" property="appcode"/>
+		<result column="system_type" property="systemType"></result>
+		<result column="logo_big_file" property="logoBigFile"/>
+		<result column="logo_small_file" property="logoSmallFile"/>
+	</resultMap>
+</mapper>

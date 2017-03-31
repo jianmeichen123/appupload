@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.galaxy.appupload.dao.IAppFileDao">
+	<insert id="addAppFile" parameterType="AppFileBean" keyColumn="id">
+		insert into upload_files(
+			id,
+			src_name,
+			purpose_name,
+			file_size,
+			dect_path,
+			file_url,
+			ext_name,
+			create_time
+		) values(
+			#{id},
+			#{srcName},
+			#{purposeName},
+			#{fileSize},
+			#{dectPath},
+			#{fileUrl},
+			#{extName},
+			#{createTime}
+		)
+	</insert>
+	
+	<select id="getFileById" parameterType="string" resultType="AppFileBean" resultMap="fileBeanMap">
+		select * from app_file t where t.id=#{id};
+	</select>
+	
+<!-- 	<select id="getFileByPage" parameterType="PageBean" resultType="FileBean" resultMap="fileBeanMap">
+		select * from upload_files limit #{start},#{pageSize};
+	</select> -->
+	
+	
+	<resultMap type="AppFileBean" id="fileBeanMap">
+		<id column="id" property="id"/>
+		<result column="src_name" property="srcName"/>
+		<result column="purpose_name" property="purposeName"/>
+		<result column="file_size" property="fileSize"/>
+		<result column="dect_path" property="dectPath"></result>
+		<result column="file_url" property="fileUrl"/>
+		<result column="ext_name" property="extName"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	
+	
+	
+
+</mapper>
