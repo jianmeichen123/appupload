@@ -75,7 +75,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 				String nums = getRandomString(6);
 				// 数据库保存的文件类型
 				String attachType = s1[1];
-				String path = upload_url+"\\imgs"+"\\"+nums+"\\";
+				String path = upload_url+"/imgs"+"/"+nums+"/";
 				String basePath =  path + s1[0] + "." + attachType;
 				File files = new File(basePath);
 				if(!files.exists() && !files.mkdirs()){
@@ -95,7 +95,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	        	String nums = getRandomString(6);
 				// 数据库保存的文件类型
 				String attachType = s1[1];
-				String path = upload_url+"\\imgs"+"\\"+nums+"\\";
+				String path = upload_url+"/imgs"+"/"+nums+"/";
 				String basePath =  path + s1[0] + "." + attachType;
 				File files = new File(basePath);
 				if(!files.exists() && !files.mkdirs()){
@@ -117,12 +117,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 		ApplicationInfoBean application = appManagerDao.getAppBean(appcode,type);
 		if(application!=null){
 			if(!(StringUtils.isNullOrEmpty(bigPath)) && !(StringUtils.isNullOrEmpty(application.getLogoBigFile()))){
-				File fl =new File(upload_url+"\\"+application.getLogoBigFile());
+				File fl =new File(upload_url+"/"+application.getLogoBigFile());
 				fl.delete();
 				fl.getParentFile().delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(smallPath)) && !(StringUtils.isNullOrEmpty(application.getLogoSmallFile()))){
-				File f2 =new File(upload_url+"\\"+application.getLogoSmallFile());
+				File f2 =new File(upload_url+"/"+application.getLogoSmallFile());
 				f2.delete();
 				f2.getParentFile().delete();
 			}
@@ -182,7 +182,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 				String[] s1 = file.getOriginalFilename().split("\\.");
 				// 数据库保存的文件类型
 				String attachType = s1[1];
-				path = upload_url+"\\file"+"\\"+nums+"\\";
+				path = upload_url+"/file"+"/"+nums+"/";
 				String basePath =  path + s1[0] + "." + attachType;
 				
 				File files = new File(basePath);
@@ -215,13 +215,13 @@ public class AppManagerServiceImpl implements AppManagerService{
 		params.put("vstatus", vstatus);
 		VersionInfoBean info = appManagerDao.isExistVersion(params);
 		if(info!=null){
-			File fl =new File(upload_url+"\\"+info.getQrCode());
+			File fl =new File(upload_url+"/"+info.getQrCode());
 			if(fl.isFile() && fl.exists()){
 				fl.delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(filePath)) && !(StringUtils.isNullOrEmpty(info.getFilepath()))){
-				File f2 =new File(upload_url+"\\"+info.getFilepath());
-				File f3 =new File(f2.getParentFile().toString()+"\\"+"stars.plist");
+				File f2 =new File(upload_url+"/"+info.getFilepath());
+				File f3 =new File(f2.getParentFile().toString()+"/"+"stars.plist");
 				if(f2.isFile() && f2.exists()){
 					f2.delete();
 				}
