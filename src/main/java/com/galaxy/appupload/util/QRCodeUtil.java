@@ -123,13 +123,16 @@ public class QRCodeUtil {
 	 */
 	public static String encode(String content, String imgPath, String destPath, boolean needCompress)
 			throws Exception {
-		String dealPath = "/QRCode" + "/";
+		String dealPath = "QRCode";
+		String path = destPath +'/'+ dealPath;
 		BufferedImage image = QRCodeUtil.createImage(content, imgPath, needCompress);
-		mkdirs(destPath + "/"+dealPath);
-		String path = destPath+ "/" + dealPath;
+		File files = new File(path);
+		if(!files.exists() && !files.mkdirs()){
+			files.mkdirs();
+		}
 		String file = new Random().nextInt(99999999) + ".jpg";
 		ImageIO.write(image, FORMAT_NAME, new File(path + "/" + file));
-		return dealPath + file;
+		return dealPath +'/'+file;
 	}
 
 	/**

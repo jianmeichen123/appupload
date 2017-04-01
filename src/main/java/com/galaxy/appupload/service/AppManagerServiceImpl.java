@@ -45,7 +45,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	private RDataToJson  Ifinte= new RDataToJson();
 	@Autowired
 	AppManagerDao appManagerDao;
-	
+	//获取路径
 	String upload_url = ReadProperties.getRescMap().get("upload_url");
 	String appupload_url = ReadProperties.getRescMap().get("appupload_url");
 	
@@ -338,11 +338,11 @@ public class AppManagerServiceImpl implements AppManagerService{
 			VersionInfoBean versionInfoBean = appManagerDao.getNewVersionInfo(params);
 			if(versionInfoBean!=null){
 				if("Ios".equals(systemType)||"ios".equals(systemType)){
-					String[] ss = versionInfoBean.getFilepath().split("\\\\");
+					String[] ss = versionInfoBean.getFilepath().split("/");
 					String url =appupload_url+"download/app.action?nums="+ss[1]+"&appupload_url="+appupload_url;
 					r_versionInfo.setUrl(url);
 				}else{
-					r_versionInfo.setUrl(appupload_url+versionInfoBean.getFilepath().replace("\\", "/"));
+					r_versionInfo.setUrl(appupload_url+versionInfoBean.getFilepath());
 				}
 				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
 				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
