@@ -1,9 +1,9 @@
 package com.galaxy.appupload.beans;
 
 public class R_versionInfoBean {
-	private String clientVersion;		//客户端版本号
-	private String url;					//文件地址
-	private String updateLog;			//更新内容
+	private String clientVersion;		//瀹㈡埛绔増鏈彿
+	private String url;					//鏂囦欢鍦板潃
+	private String updateLog;			//鏇存柊鍐呭
 	
 	public String getClientVersion() {
 		return clientVersion;

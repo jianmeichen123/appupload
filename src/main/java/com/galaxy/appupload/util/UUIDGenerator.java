@@ -8,33 +8,33 @@ import java.util.UUID;
 
 
 /**
- * Éú³É32Î»uuid
+ * ç”Ÿæˆ32ä½uuid
  * @author liuli
  * @create date 2017-03-19
  * 
  */
 public class UUIDGenerator {
-	List<String> list = new ArrayList<String>(); // ´æ·ÅÊı¾İ
+	List<String> list = new ArrayList<String>(); // å­˜æ”¾æ•°æ®
 
 	public UUIDGenerator() {
 	}
 
 	/**
-	 * Ëæ»úÉú³Éuuid, È¥µô"-"·ûºÅ
+	 * éšæœºç”Ÿæˆuuid, å»æ‰"-"ç¬¦å·
 	 * @param   
-	 * @return ·µ»Ø String
+	 * @return è¿”å› String
 	 */
 	public static String getUUID() {
 		UUID uuid = UUID.randomUUID();
 		String str = uuid.toString();
-		// È¥µô"-"·ûºÅ
+		// å»æ‰"-"ç¬¦å·
 		String temp = str.substring(0, 8) + str.substring(9, 13)
 				+ str.substring(14, 18) + str.substring(19, 23)
 				+ str.substring(24);
 		return temp;
 	}
 
-	// »ñµÃÖ¸¶¨ÊıÁ¿µÄUUID
+	// è·å¾—æŒ‡å®šæ•°é‡çš„UUID
 	public static String[] getUUID(int number) {
 		if (number < 1) {
 			return null;
@@ -47,25 +47,25 @@ public class UUIDGenerator {
 	}
 
 	/**
-	 * Ëæ»úÉú³ÉÒ»¸ö10Î»ÊıµÄÊı×Ö
+	 * éšæœºç”Ÿæˆä¸€ä¸ª10ä½æ•°çš„æ•°å­—
 	 * @param   
-	 * @return ·µ»Ø String
+	 * @return è¿”å› String
 	 */
 	public static String getRandomNumber() {
 		Random r = new Random();
 		String str = "";
-		for (int i = 0; i < 10; i++) {// Ñ­»·10´Î
-			Integer x = r.nextInt(10); // 0-9µÄËæ»úÊı
-			str += x.toString(); // Æ´³É10Î»Êı ÒòÎªintÀàĞÍÖ»ÄÜ´æ·Å200000000+µÄÊı¾İ£¬ËùÒÔÖ»ÄÜÓÃ×Ö·û´®Æ´½Ó
+		for (int i = 0; i < 10; i++) {// å¾ªç¯10æ¬¡
+			Integer x = r.nextInt(10); // 0-9çš„éšæœºæ•°
+			str += x.toString(); // æ‹¼æˆ10ä½æ•° å› ä¸ºintç±»å‹åªèƒ½å­˜æ”¾200000000+çš„æ•°æ®ï¼Œæ‰€ä»¥åªèƒ½ç”¨å­—ç¬¦ä¸²æ‹¼æ¥
 		}
 		
 		return str;
 	}
 
 	/**
-	 * Ëæ»úÉú³ÉÒ»¸ö10Î»ÊıµÄÊı×ÖºÍ×ÖÄ¸×éºÏ
+	 * éšæœºç”Ÿæˆä¸€ä¸ª10ä½æ•°çš„æ•°å­—å’Œå­—æ¯ç»„åˆ
 	 * @param   
-	 * @return ·µ»Ø String
+	 * @return è¿”å› String
 	 */
 	public static String GetRandomString(int Len) {
         String[] baseString={"0","1","2","3",

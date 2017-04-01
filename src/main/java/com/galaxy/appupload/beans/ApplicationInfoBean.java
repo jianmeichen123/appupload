@@ -3,11 +3,11 @@ package com.galaxy.appupload.beans;
 
 public class ApplicationInfoBean {
 	
-	private String id;				//Ö÷¼üid
-	private String appcode;			//Ó¦ÓÃÃû³Æ
-	private String systemType;		//°æ±¾ÀàĞÍ
-	private String logoBigFile;		//´óÍ¼±ê
-	private String logoSmallFile;	//Ğ¡Í¼±ê
+	private String id;				//ä¸»é”®id
+	private String appcode;			//åº”ç”¨åç§°
+	private String systemType;		//ç‰ˆæœ¬ç±»å‹
+	private String logoBigFile;		//å¤§å›¾æ ‡
+	private String logoSmallFile;	//å°å›¾æ ‡
 	
 	public String getId() {
 		return id;

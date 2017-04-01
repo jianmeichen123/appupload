@@ -50,8 +50,4 @@ public class AppDownloadController {
 		return "ios/ios_setup_success";
 	}
 	
-	
-	
-	
-	
 }

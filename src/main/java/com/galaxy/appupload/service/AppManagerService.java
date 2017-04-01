@@ -11,7 +11,7 @@ import com.galaxy.appupload.beans.VersionInfoBean;
 
 public interface AppManagerService {
 	/**
-	 * ±£´æÓ¦ÓÃĞÅÏ¢
+	 * ä¿å­˜åº”ç”¨ä¿¡æ¯
 	 * @param applicationInfoBean
 	 * @param request
 	 * @param smallLogo
@@ -20,7 +20,7 @@ public interface AppManagerService {
 	 */
 	public int saveApplication(ApplicationInfoBean applicationInfoBean, HttpServletRequest request,MultipartFile smallLogo, MultipartFile bigLogo);
 	/**
-	 * ±£´æ°æ±¾ĞÅÏ¢
+	 * ä¿å­˜ç‰ˆæœ¬ä¿¡æ¯
 	 * @param versionInfoBean
 	 * @param request
 	 * @param file
@@ -29,7 +29,7 @@ public interface AppManagerService {
 	 */
 	public int saveVersion(VersionInfoBean versionInfoBean, HttpServletRequest request, MultipartFile file) throws Exception;
 	/**
-	 * »ñÈ¡ÏÂÔØÎÄ¼ş·½·¨
+	 * è·å–ä¸‹è½½æ–‡ä»¶æ–¹æ³•
 	 * @param version 
 	 * @param type 
 	 * @param code 
@@ -37,18 +37,18 @@ public interface AppManagerService {
 	 */
 	public VersionInfoBean downloadFile(String code, String type, String version);
 	/**
-	 * »ñÈ¡appÓ¦ÓÃlist
+	 * è·å–appåº”ç”¨list
 	 * @return
 	 */
 	public List<ApplicationInfoBean> getAppList();
 	/**
-	 * »ñÈ¡ÏµÍ³ÀàĞÍlist
+	 * è·å–ç³»ç»Ÿç±»å‹list
 	 * @param appname
 	 * @return
 	 */
 	public List<ApplicationInfoBean> getSysType(String appname);
 	/**
-	 * »ñÈ¡°æ±¾ºÅlist
+	 * è·å–ç‰ˆæœ¬å·list
 	 * @param appname
 	 * @param apptype
 	 * @param status 
@@ -56,14 +56,14 @@ public interface AppManagerService {
 	 */
 	public List<VersionInfoBean> getSysVersion(String appname, String apptype, String status);
 	/**
-	 * »ñÈ¡°æ±¾×´Ì¬list
+	 * è·å–ç‰ˆæœ¬çŠ¶æ€list
 	 * @param appname
 	 * @param apptype
 	 * @return
 	 */
 	public List<VersionInfoBean> getVerStatus(String appname, String apptype);
 	/**
-	 * »ñÈ¡°æ±¾ĞÅÏ¢
+	 * è·å–ç‰ˆæœ¬ä¿¡æ¯
 	 * @param systemType
 	 * @param appCode
 	 * @param appCode2 
@@ -71,7 +71,7 @@ public interface AppManagerService {
 	 */
 	public String getVersionInfo(String clientName, String systemType, String appCode);
 	/**
-	 * Í¨¹ıappid £¬status£¬»ñÈ¡×îĞÂ°æ±¾ĞÅÏ¢
+	 * é€šè¿‡appid ï¼Œstatusï¼Œè·å–æœ€æ–°ç‰ˆæœ¬ä¿¡æ¯
 	 * @param id
 	 * @param status
 	 * @return

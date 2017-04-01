@@ -39,20 +39,20 @@ import com.mysql.jdbc.StringUtils;
 @Service(value="appManagerService")
 public class AppManagerServiceImpl implements AppManagerService{
 	private static final Logger log = LoggerFactory.getLogger(AppManagerController.class);
-	//×ª»»Æ÷
+	//è½¬æ¢å™¨
 	Gson gson = new Gson();
 	private RDataToJson  Ifinte= new RDataToJson();
 	@Autowired
 	AppManagerDao appManagerDao;
 	
 	/**
-	 * ±£´æÓ¦ÓÃ·½·¨
+	 * ä¿å­˜åº”ç”¨æ–¹æ³•
 	 */
 	@Override
 	public int saveApplication(ApplicationInfoBean applicationInfoBean, HttpServletRequest request,MultipartFile smallLogo, MultipartFile bigLogo) {
 		String smallPath = "";
 		String bigPath = "";
-		//»ñÈ¡Ò³ÃæĞÅÏ¢
+		//è·å–é¡µé¢ä¿¡æ¯
 		String appcode = request.getParameter("appcode");
 		String systemType = request.getParameter("systemType");
 		String type="";
@@ -63,12 +63,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 		}
 		applicationInfoBean.setSystemType(type);
 		applicationInfoBean.setAppcode(appcode);
-		//Ğ¡Í¼±ê»ñÈ¡
+		//å°å›¾æ ‡è·å–
 		if (!smallLogo.isEmpty()) {
 			try {
 				String[] s1 = smallLogo.getOriginalFilename().split("\\.");
 				String nums = getRandomString(6);
-				// Êı¾İ¿â±£´æµÄÎÄ¼şÀàĞÍ
+				// æ•°æ®åº“ä¿å­˜çš„æ–‡ä»¶ç±»å‹
 				String attachType = s1[1];
 				String path = request.getSession().getServletContext().getRealPath("/")+"\\file"+"\\"+nums+"\\";
 				String basePath =  path + s1[0] + "." + attachType;
@@ -83,12 +83,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 				e.printStackTrace();
 			}
 		}
-		//´óÍ¼±ê»ñÈ¡
+		//å¤§å›¾æ ‡è·å–
 		if (!bigLogo.isEmpty()) {
 	        try {
 	        	String[] s1 = bigLogo.getOriginalFilename().split("\\.");
 	        	String nums = getRandomString(6);
-				// Êı¾İ¿â±£´æµÄÎÄ¼şÀàĞÍ
+				// æ•°æ®åº“ä¿å­˜çš„æ–‡ä»¶ç±»å‹
 				String attachType = s1[1];
 				String path = request.getSession().getServletContext().getRealPath("/")+"\\file"+"\\"+nums+"\\";
 				String basePath =  path + s1[0] + "." + attachType;
@@ -104,7 +104,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			} 
 
 		}
-		//Éú³É32Î»ID
+		//ç”Ÿæˆ32ä½ID
 		String ID = UUIDGenerator.getUUID();
 		applicationInfoBean.setId(ID);
 		//dao
@@ -136,7 +136,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	}
 	
 	/**
-	 * ±£´æ°æ±¾ĞÅÏ¢·½·¨
+	 * ä¿å­˜ç‰ˆæœ¬ä¿¡æ¯æ–¹æ³•
 	 * @throws Exception 
 	 */
 	@Override
@@ -149,9 +149,9 @@ public class AppManagerServiceImpl implements AppManagerService{
 		int vstatus=0;
 		String qr="";
 		
-		//»ñÈ¡6Î»Ëæ»úÊı
+		//è·å–6ä½éšæœºæ•°
 		String nums = getRandomString(6);
-		//´ÓÒ³Ãæ»ñÈ¡Öµ
+		//ä»é¡µé¢è·å–å€¼
 		String appcode = request.getParameter("appName");
 		String apptype = request.getParameter("appType");
 		String version = request.getParameter("version");
@@ -164,19 +164,19 @@ public class AppManagerServiceImpl implements AppManagerService{
 			vstatus=1;
 		}
 		
-		//»ñÈ¡appid
+		//è·å–appid
 		String appid = appManagerDao.getAppId(appcode,apptype);
-		//Éú³É32Î»ID
+		//ç”Ÿæˆ32ä½ID
 		String ID = UUIDGenerator.getUUID();
-		//ÏµÍ³µ±Ç°Ê±¼ä
+		//ç³»ç»Ÿå½“å‰æ—¶é—´
 		SimpleDateFormat ff =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date= new Date();
 		
-		//appÎÄ¼ş»ñÈ¡
+		//appæ–‡ä»¶è·å–
 		if (!file.isEmpty()) {
 			try {
 				String[] s1 = file.getOriginalFilename().split("\\.");
-				// Êı¾İ¿â±£´æµÄÎÄ¼şÀàĞÍ
+				// æ•°æ®åº“ä¿å­˜çš„æ–‡ä»¶ç±»å‹
 				String attachType = s1[1];
 				
 				path = request.getSession().getServletContext().getRealPath("/")+"file"+"\\"+nums+"\\";
@@ -195,23 +195,23 @@ public class AppManagerServiceImpl implements AppManagerService{
 			}
 		}
 		
-		//´´½¨plist·½·¨
+		//åˆ›å»ºplistæ–¹æ³•
 		String appupload_url = ReadProperties.getRescMap().get("appupload_url");
 		
 		if("Ios".equals(apptype)||"ios".equals(apptype)){
-			//´´½¨plist·½·¨
+			//åˆ›å»ºplistæ–¹æ³•
 			createplist(path,appupload_url+filePath,version,request);
 			//String url = ReadProperties.getRescMap().get("url");
 			qr=appupload_url+"download/app.action?nums="+nums+"&appupload_url="+appupload_url;
 		}else{
 			qr =appupload_url+filePath;
 		}
-		//Éú³É¶şÎ¬Âë
+		//ç”ŸæˆäºŒç»´ç 
 		//String qr ="http://192.168.99.212:8080/appupload/appManager/qrCodeDownload.action?filePath="+filePath;
 		String qrcode = QRCodeUtil.encode(qr, "",qrpath, true);
 		
 		
-		//daoÅĞ¶Ï
+		//daoåˆ¤æ–­
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("appid", appid);
 		params.put("version", version);
@@ -254,19 +254,19 @@ public class AppManagerServiceImpl implements AppManagerService{
 		return result;
 	}
 	/**
-	 * »ñÈ¡appÓ¦ÓÃlist
+	 * è·å–appåº”ç”¨list
 	 */
 	public List<ApplicationInfoBean> getAppList(){
 		return appManagerDao.getAppList();
 	}
 	/**
-	 * »ñÈ¡ÏµÍ³ÀàĞÍby appname
+	 * è·å–ç³»ç»Ÿç±»å‹by appname
 	 */
 	public List<ApplicationInfoBean> getSysType(String appname) {
 		return appManagerDao.getSysTypeList(appname);
 	}
 	/**
-	 * »ñÈ¡°æ±¾ĞÍºÅlist
+	 * è·å–ç‰ˆæœ¬å‹å·list
 	 */
 	@Override
 	public List<VersionInfoBean> getSysVersion(String appname, String apptype,String status) {
@@ -275,7 +275,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		return versionInfoBean;
 	}
 	/**
-	 * »ñÈ¡°æ±¾×´Ì¬list
+	 * è·å–ç‰ˆæœ¬çŠ¶æ€list
 	 */
 	@Override
 	public List<VersionInfoBean> getVerStatus(String appname, String apptype) {
@@ -284,7 +284,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		return versionInfoBean;
 	}
 	/**
-	 * ¶şÎ¬Âë»ñÈ¡°æ±¾×îĞÂĞÅÏ¢·½·¨
+	 * äºŒç»´ç è·å–ç‰ˆæœ¬æœ€æ–°ä¿¡æ¯æ–¹æ³•
 	 */
 	@Override
 	public VersionInfoBean getNewVersionByStatus(String id, String status) {
@@ -296,7 +296,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	}
 	
 	/**
-	 * ÏÂÔØ·½·¨
+	 * ä¸‹è½½æ–¹æ³•
 	 */
 	@Override
 	public VersionInfoBean downloadFile(String code, String type, String status) {
@@ -314,7 +314,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		return versionInfoBean;
 	}
 	/**
-	 * »ñÈ¡×îĞÂ°æ±¾ĞÅÏ¢
+	 * è·å–æœ€æ–°ç‰ˆæœ¬ä¿¡æ¯
 	 */
 	@Override
 	public String getVersionInfo(String clientName, String systemType, String appCode) {
@@ -325,7 +325,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		R_versionInfoBean r_versionInfo = new R_versionInfoBean();
 		String appupload_url = ReadProperties.getRescMap().get("appupload_url");
 		
-		//»ñÈ¡appid
+		//è·å–appid
 		String appid = appManagerDao.getAppId(clientName,systemType);
 		if(!StringUtils.isNullOrEmpty(appid)){
 			if("beta".equals(appCode)){
@@ -333,7 +333,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			}else if("release".equals(appCode)){
 				flag=1;
 			}
-			//Ö´ĞĞdao
+			//æ‰§è¡Œdao
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("appid", appid);
 			params.put("appcode", flag);
@@ -349,27 +349,27 @@ public class AppManagerServiceImpl implements AppManagerService{
 				}
 				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
 				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
-				//gson×ªjson
+				//gsonè½¬json
 				dataValue = gson.toJson(r_versionInfo);
-				// »ñÈ¡ÏûÏ¢json×Ö·û´®
+				// è·å–æ¶ˆæ¯jsonå­—ç¬¦ä¸²
 				resp = Ifinte.getDataJson(Static_Commond.SUCCESS,  ReadProperties.getRescMap().get("success"),dataValue);
-				log.info("·µ»Ø½á¹û:"+resp);
+				log.info("è¿”å›ç»“æœ:"+resp);
 				return resp;
 			}else{
-				// »ñÈ¡ÏûÏ¢json×Ö·û´®
+				// è·å–æ¶ˆæ¯jsonå­—ç¬¦ä¸²
 				resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
-				log.info("Î´²éµ½Ïà¹Ø°æ±¾ĞÅÏ¢£¬·µ»Ø½á¹û:"+resp);
+				log.info("æœªæŸ¥åˆ°ç›¸å…³ç‰ˆæœ¬ä¿¡æ¯ï¼Œè¿”å›ç»“æœ:"+resp);
 				return resp;
 			}
 		}else{
-			// »ñÈ¡ÏûÏ¢json×Ö·û´®
+			// è·å–æ¶ˆæ¯jsonå­—ç¬¦ä¸²
 			resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
-			log.info("Î´²éµ½Ïà¹Ø°æ±¾ĞÅÏ¢£¬·µ»Ø½á¹û:"+resp);
+			log.info("æœªæŸ¥åˆ°ç›¸å…³ç‰ˆæœ¬ä¿¡æ¯ï¼Œè¿”å›ç»“æœ:"+resp);
 			return resp;
 		}
 	}
 	
-	//Ëæ»úÉú³ÉnÎ»Êı¾İ
+	//éšæœºç”Ÿæˆnä½æ•°æ®
 	public String getRandomString(int n){
 		char[] str1 = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 		int i;
@@ -386,17 +386,17 @@ public class AppManagerServiceImpl implements AppManagerService{
 		return authcode.toString();
 	}
 	
-	//Éú³ÉplistÎÄ¼ş·½·¨
+	//ç”Ÿæˆplistæ–‡ä»¶æ–¹æ³•
 	public void createplist(String iosfile,String ipa, String version, HttpServletRequest request){
-		log.info("´´½¨plistÎÄ¼ş¿ªÊ¼");
+		log.info("åˆ›å»ºplistæ–‡ä»¶å¼€å§‹");
 		String path = iosfile+"\\"+"stars.plist";
 		FileOutputStream fos = null;
 		try {
-			// ´´½¨ÎÄµµÀàĞÍ
+			// åˆ›å»ºæ–‡æ¡£ç±»å‹
 			DocType docType = new DocType("plist");
 			docType.setPublicID("-//Apple//DTD PLIST 1.0//EN");
 			docType.setSystemID("http://www.apple.com/DTDs/PropertyList-1.0.dtd");
-			// ´´½¨¸ù½Úµã plist
+			// åˆ›å»ºæ ¹èŠ‚ç‚¹ plist
 			Element root = new Element("plist");
 			root.setAttribute("version", "1.0");
 			//
@@ -434,33 +434,33 @@ public class AppManagerServiceImpl implements AppManagerService{
 			rootDictArrayDictDict.addContent(new Element("string")
 			.setText("software"));
 			rootDictArrayDictDict.addContent(new Element("key").setText("title"));
-			rootDictArrayDictDict.addContent(new Element("string").setText("·±ĞÇ"));
+			rootDictArrayDictDict.addContent(new Element("string").setText("ç¹æ˜Ÿ"));
 			rootDictArrayDict.addContent(rootDictArrayDictDict);
 	
 			rootDictArray.addContent(rootDictArrayDict);
 			rootDict.addContent(rootDictArray);
 			root.addContent(rootDict);
-			// ¸ù½ÚµãÌí¼Óµ½ÎÄµµÖĞ;
+			// æ ¹èŠ‚ç‚¹æ·»åŠ åˆ°æ–‡æ¡£ä¸­;
 			Document Doc = new Document(root, docType);
 			Format format = Format.getPrettyFormat();
 			XMLOutputter XMLOut = new XMLOutputter(format);
-			// Êä³ö user.xml ÎÄ¼ş£»
+			// è¾“å‡º user.xml æ–‡ä»¶ï¼›
 			fos = new FileOutputStream(new File(path));
 			XMLOut.output(Doc, fos);
 		} catch (IOException e) {
 			e.printStackTrace();
-			log.info("´´½¨plistÎÄ¼şÒì³£");
+			log.info("åˆ›å»ºplistæ–‡ä»¶å¼‚å¸¸");
 		}finally{
 			if(fos!=null){
 				try {
 					fos.close();
 				} catch (IOException e) {
 					e.printStackTrace();
-					log.info("´´½¨plistÎÄ¼şÒì³£");
+					log.info("åˆ›å»ºplistæ–‡ä»¶å¼‚å¸¸");
 				}
 			}
 		}
-		log.info("´´½¨plistÎÄ¼ş³É¹¦");
+		log.info("åˆ›å»ºplistæ–‡ä»¶æˆåŠŸ");
 	}
 	 
 }

@@ -8,81 +8,81 @@ import com.galaxy.appupload.beans.VersionInfoBean;
 
 public interface AppManagerDao {
 	/**
-	 * ±£´æÓ¦ÓÃĞÅÏ¢·½·¨
+	 * ä¿å­˜åº”ç”¨ä¿¡æ¯æ–¹æ³•
 	 * @param applicationInfoBean
 	 * @return
 	 */
 	public int saveApplication(ApplicationInfoBean applicationInfoBean);
 	/**
-	 * ¸üĞÂÓ¦ÓÃĞÅÏ¢
+	 * æ›´æ–°åº”ç”¨ä¿¡æ¯
 	 * @param params
 	 * @return
 	 */
 	public int updateApplication(Map<String, Object> params);
 	/**
-	 * ±£´æ°æ±¾ĞÅÏ¢·½·¨
+	 * ä¿å­˜ç‰ˆæœ¬ä¿¡æ¯æ–¹æ³•
 	 * @param versionInfoBean
 	 * @return
 	 */
 	public int saveVsersion(VersionInfoBean versionInfoBean);
 	/**
-	 * ¸üĞÂ°æ±¾ĞÅÏ¢·½·¨
+	 * æ›´æ–°ç‰ˆæœ¬ä¿¡æ¯æ–¹æ³•
 	 * @param versionInfoBean
 	 * @return
 	 */
 	public int updateVsersion(VersionInfoBean versionInfoBean);
 	
 	/**
-	 * »ñÈ¡appÓ¦ÓÃlist·½·¨
+	 * è·å–appåº”ç”¨listæ–¹æ³•
 	 * @return
 	 */
 	public List<ApplicationInfoBean> getAppList();
 	/**
-	 * »ñÈ¡ÏµÍ³ÀàĞÍlist·½·¨
+	 * è·å–ç³»ç»Ÿç±»å‹listæ–¹æ³•
 	 * @param appname
 	 * @return
 	 */
 	public List<ApplicationInfoBean> getSysTypeList(String appname);
 	/**
-	 * appid»ñÈ¡°æ±¾ĞÅÏ¢list
+	 * appidè·å–ç‰ˆæœ¬ä¿¡æ¯list
 	 * @param appid
 	 * @param status 
 	 * @return
 	 */
 	public List<VersionInfoBean> getVersionList(String appid, String status);
 	/**
-	 * »ñÈ¡appid by appcode+apptype
+	 * è·å–appid by appcode+apptype
 	 * @param appcode
 	 * @param apptype
 	 * @return
 	 */
 	public String getAppId(String appcode, String apptype);
 	/**
-	 * Í¨¹ıappid£¨appCode£¬systemType£© version »ñÈ¡°æ±¾ĞÅÏ¢
+	 * é€šè¿‡appidï¼ˆappCodeï¼ŒsystemTypeï¼‰ version è·å–ç‰ˆæœ¬ä¿¡æ¯
 	 * @param version 
 	 * @return
 	 */
 	public VersionInfoBean getDownloadFile(String appid, String version);
 	/**
-	 * appid»ñÈ¡×îĞÂ°æ±¾ĞÅÏ¢·½·¨
+	 * appidè·å–æœ€æ–°ç‰ˆæœ¬ä¿¡æ¯æ–¹æ³•
 	 * @param params
 	 * @return
 	 */
 	public VersionInfoBean getNewVersionInfo(Map<String, Object> params);
 	/**
-	 * Í¨¹ıappid£¬version£¬statusÊÇ·ñ´æÔÚÊı¾İ
+	 * é€šè¿‡appidï¼Œversionï¼Œstatusæ˜¯å¦å­˜åœ¨æ•°æ®
 	 * @param params
 	 * @return
 	 */
 	public VersionInfoBean isExistVersion(Map<String, Object> params);
 	/**
-	 * »ñÈ¡°æ±¾×´Ì¬list
+	 * è·å–ç‰ˆæœ¬çŠ¶æ€list
 	 * @param appid
 	 * @return
 	 */
 	public List<VersionInfoBean> getStatusList(String appid);
 	/**
-	 * »ñÈ¡Ó¦ÓÃĞÅÏ¢bean 
+	 * è·å–åº”ç”¨ä¿¡æ¯bean 
 	 * @param appcode
 	 * @param type
 	 * @return

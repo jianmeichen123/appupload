@@ -10,13 +10,13 @@ public class RDataToJson {
 	@SuppressWarnings("rawtypes")
 	List list = new ArrayList();
 	
-	// ·µ»Øjson
+	// è¿”å›žjson
 	public String getDataJson(String code,String msg,String data){
 		
 		JSONObject json = new JSONObject();
 		json.put("resultCode", code);
 		//json.put("respMsg",msg);
-		//base64¼ÓÃÜ
+		//base64åŠ å¯†
 		json.put("respMsg", Base64Coding.encode(msg));
 		if(data.equals("")||data==null){
 			json.put("data", list);

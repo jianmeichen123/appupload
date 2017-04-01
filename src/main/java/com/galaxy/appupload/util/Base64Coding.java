@@ -13,7 +13,7 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 /**
- * Base64加密解密
+ * Base64鍔犲瘑瑙ｅ瘑
  * @author liuli
  *
  */
@@ -23,7 +23,7 @@ public class Base64Coding {
 	  private static BASE64Decoder decoder = new sun.misc.BASE64Decoder();    
 	        public Base64Coding() {}   
 	        /**
-	         * 加密
+	         * 鍔犲瘑
 	         * @param s
 	         * @return
 	         */
@@ -32,7 +32,7 @@ public class Base64Coding {
 	            return encoder.encode(s.getBytes());   
 	        }    
 	  /**
-	   * 解密
+	   * 瑙ｅ瘑
 	   * @param s
 	   * @return
 	   */
@@ -41,13 +41,13 @@ public class Base64Coding {
 			byte[] temp = decoder.decodeBuffer(s);
 			return new String(temp);
 		} catch (IOException ioe) {
-			System.out.println("解密失败");
+			System.out.println("瑙ｅ瘑澶辫触");
 		}
 		return s;
 
 	}   
 	  /**
-	   * 将对象转成String
+	   * 灏嗗璞¤浆鎴怱tring
 	   * @param obj
 	   * @return
 	   * @throws IOException
@@ -66,7 +66,7 @@ public class Base64Coding {
 		   return encoder.encode(baos.toByteArray());
 		}
 	  /**
-	   * 将String转成对象
+	   * 灏哠tring杞垚瀵硅薄
 	   * @param strObj
 	   * @return
 	   * @throws IOException
@@ -81,7 +81,7 @@ public class Base64Coding {
 		   return objIn.readObject();
 		}
 	  
-	  //main方法
+	  //main鏂规硶
 	  public static void main(String[] args)
 	  {
 		  //Base64Coding base = new Base64Coding();

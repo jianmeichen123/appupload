@@ -19,28 +19,28 @@ public class ValidDataFormatImpl implements ValidDataFormat{
 
 		String resultCode = null;
 		if (clientName == null || "".equals(clientName)) {
-			log.info("¿Í»§¶ËÃû³ÆÎª¿Õ");
+			log.info("å®¢æˆ·ç«¯åç§°ä¸ºç©º");
 			resultCode = Static_Commond.HEADERROR;
 			map.put(Static_Commond.STATE, Static_Commond.TRUE);
 			map.put(Static_Commond.RESULTCODE, resultCode);
 			map.put(Static_Commond.RESMSG, ReadProperties.getRescMap().get("clientName_NULL"));
 			return map;
 		} else if (clientVersion == null || "".equals(clientVersion)) {
-			log.info("¿Í»§¶Ë°æ±¾ºÅÎª¿Õ");
+			log.info("å®¢æˆ·ç«¯ç‰ˆæœ¬å·ä¸ºç©º");
 			resultCode = Static_Commond.HEADERROR;
 			map.put(Static_Commond.STATE, Static_Commond.TRUE);
 			map.put(Static_Commond.RESULTCODE, resultCode);
 			map.put(Static_Commond.RESMSG, ReadProperties.getRescMap().get("clientVersion_NULL"));
 			return map;
 		}  else if (systemType == null || "".equals(systemType)) {
-			log.info("¿Í»§¶ËÏµÍ³ÀàĞÍÎª¿Õ");
+			log.info("å®¢æˆ·ç«¯ç³»ç»Ÿç±»å‹ä¸ºç©º");
 			resultCode = Static_Commond.HEADERROR;
 			map.put(Static_Commond.STATE, Static_Commond.TRUE);
 			map.put(Static_Commond.RESULTCODE, resultCode);
 			map.put(Static_Commond.RESMSG, ReadProperties.getRescMap().get("systemType_NULL"));
 			return map;
 		}else if (appCode == null || "".equals(appCode)) {
-			log.info("Ó¦ÓÃ°æ±¾ÀàĞÍÎª¿Õ");
+			log.info("åº”ç”¨ç‰ˆæœ¬ç±»å‹ä¸ºç©º");
 			resultCode = Static_Commond.HEADERROR;
 			map.put(Static_Commond.STATE, Static_Commond.TRUE);
 			map.put(Static_Commond.RESULTCODE, resultCode);

@@ -6,6 +6,6 @@ import java.util.Map;
 
 public interface ValidDataFormat {
 
-	//¼ì²â°æ±¾ĞÅÏ¢
+	//æ£€æµ‹ç‰ˆæœ¬ä¿¡æ¯
 	Map<String, String> validVersionInfo(Map<String, String> resmap,String clientName,String clientVersion, String systemType, String appCode);
 }

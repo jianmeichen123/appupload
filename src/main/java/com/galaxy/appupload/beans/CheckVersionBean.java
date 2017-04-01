@@ -1,10 +1,10 @@
 package com.galaxy.appupload.beans;
 
 public class CheckVersionBean {
-	private String clientName;			//¿Í»§¶ËÃû³Æ
-	private String clientVersion;		//¿Í»§¶Ë°æ±¾
-	private String systemType;			//ÏµÍ³ÀàĞÍ
-	private String appCode;				//Ó¦ÓÃ°æ±¾£¨beta£º²âÊÔ£¬ release£º·¢²¼£©
+	private String clientName;			//å®¢æˆ·ç«¯åç§°
+	private String clientVersion;		//å®¢æˆ·ç«¯ç‰ˆæœ¬
+	private String systemType;			//ç³»ç»Ÿç±»å‹
+	private String appCode;				//åº”ç”¨ç‰ˆæœ¬ï¼ˆbetaï¼šæµ‹è¯•ï¼Œ releaseï¼šå‘å¸ƒï¼‰
 	
 	public String getSystemType() {
 		return systemType;

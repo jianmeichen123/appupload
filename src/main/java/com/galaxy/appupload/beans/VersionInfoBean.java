@@ -2,15 +2,15 @@ package com.galaxy.appupload.beans;
 
 public class VersionInfoBean {
 	
-	private String id;					//Ö÷¼üid
-	private String versionNo;			//°æ±¾ºÅ
-	private String createTime;			//´´½¨Ê±¼ä
-	private String filename;			//ÎÄ¼şÃû
-	private String filepath;			//ÎÄ¼şÂ·¾¶
-	private String updatelog;			//¸üĞÂÄÚÈİ
-	private String appid;				//Íâ¼üid
-	private int versionStatus;			//°æ±¾×´Ì¬
-	private String qrCode;				//¶şÎ¬ÂëÂ·¾¶
+	private String id;					//ä¸»é”®id
+	private String versionNo;			//ç‰ˆæœ¬å·
+	private String createTime;			//åˆ›å»ºæ—¶é—´
+	private String filename;			//æ–‡ä»¶å
+	private String filepath;			//æ–‡ä»¶è·¯å¾„
+	private String updatelog;			//æ›´æ–°å†…å®¹
+	private String appid;				//å¤–é”®id
+	private int versionStatus;			//ç‰ˆæœ¬çŠ¶æ€
+	private String qrCode;				//äºŒç»´ç è·¯å¾„
 	
 	public String getId() {
 		return id;

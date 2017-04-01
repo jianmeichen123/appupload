@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class createPlistUtil {
     public static String createPlist(HttpServletRequest request) throws IOException{
-        System.out.println("==========¿ªÊ¼´´½¨plistÎÄ¼ş");
-        //Õâ¸öµØÖ·Ó¦¸ÃÊÇ´´½¨µÄ·şÎñÆ÷µØÖ·£¬ÔÚÕâÀïÓÃÉú³Éµ½±¾µØ´ÅÅÌµØÖ·
+        System.out.println("==========å¼€å§‹åˆ›å»ºplistæ–‡ä»¶");
+        //è¿™ä¸ªåœ°å€åº”è¯¥æ˜¯åˆ›å»ºçš„æœåŠ¡å™¨åœ°å€ï¼Œåœ¨è¿™é‡Œç”¨ç”Ÿæˆåˆ°æœ¬åœ°ç£ç›˜åœ°å€
         final String path = request.getSession().getServletContext().getRealPath("/");
         File file = new File(path);
         if (!file.exists()) {
@@ -38,21 +38,21 @@ public class createPlistUtil {
                  + "<key>kind</key>\n"
                  + "<string>software-package</string>\n"
                  + "<key>url</key>\n"
-                 //ÄãÖ®Ç°ËùÉÏ´«µÄipaÎÄ¼şÂ·¾¶
+                 //ä½ ä¹‹å‰æ‰€ä¸Šä¼ çš„ipaæ–‡ä»¶è·¯å¾„
                  + "<string>http://127.0.0.1/project/upload/files/20160504201048174_7836_19.ipa</string>\n" 
                  + "</dict>\n" 
                  + "</array>\n"
                  + "<key>metadata</key>\n"
                  + "<dict>\n"
                  + "<key>bundle-identifier</key>\n"
-                 //Õâ¸öÊÇ¿ª·¢ÕßÕËºÅÓÃ»§Ãû£¬Ò²¿ÉÒÔÎª¿Õ£¬Îª¿Õ°²×°Ê±¿´²»µ½Í¼±ê£¬Íê³ÉÖ®ºó¿ÉÒÔ¿´µ½
+                 //è¿™ä¸ªæ˜¯å¼€å‘è€…è´¦å·ç”¨æˆ·åï¼Œä¹Ÿå¯ä»¥ä¸ºç©ºï¼Œä¸ºç©ºå®‰è£…æ—¶çœ‹ä¸åˆ°å›¾æ ‡ï¼Œå®Œæˆä¹‹åå¯ä»¥çœ‹åˆ°
                  + "<string>cn.vrv.im-inhouse</string>\n"
                  + "<key>bundle-version</key>\n"
                  + "<string>1.0.7</string>\n"
                  + "<key>kind</key>\n"
                  + "<string>software</string>\n"
                  + "<key>subtitle</key>\n"
-                 + "<string>ÏÂÔØ</string>\n"
+                 + "<string>ä¸‹è½½</string>\n"
                  + "<key>title</key>\n"
                  + "<string></string>\n" 
                  + "</dict>\n" 
@@ -68,16 +68,16 @@ public class createPlistUtil {
             writer.close();
             output.close();
         } catch (Exception e) {
-            System.err.println("==========´´½¨plistÎÄ¼şÒì³££º" + e.getMessage());
+            System.err.println("==========åˆ›å»ºplistæ–‡ä»¶å¼‚å¸¸ï¼š" + e.getMessage());
         }
-        System.out.println("==========³É¹¦´´½¨plistÎÄ¼ş");
+        System.out.println("==========æˆåŠŸåˆ›å»ºplistæ–‡ä»¶");
         return PLIST_PATH;
     }
 
     public static String createHtml(String plistPath,HttpServletRequest request) {
-        System.out.println("==========¿ªÊ¼´´½¨htmlÎÄ¼ş");
+        System.out.println("==========å¼€å§‹åˆ›å»ºhtmlæ–‡ä»¶");
 
-        //Õâ¸öµØÖ·Ó¦¸ÃÊÇÉú³ÉµÄ·şÎñÆ÷µØÖ·£¬ÔÚÕâÀïÓÃÉú³Éµ½±¾µØ´ÅÅÌµØÖ·
+        //è¿™ä¸ªåœ°å€åº”è¯¥æ˜¯ç”Ÿæˆçš„æœåŠ¡å™¨åœ°å€ï¼Œåœ¨è¿™é‡Œç”¨ç”Ÿæˆåˆ°æœ¬åœ°ç£ç›˜åœ°å€
         final String path = request.getSession().getServletContext().getRealPath("/");
         File file = new File(path);
         if (!file.exists()) {
@@ -98,7 +98,7 @@ public class createPlistUtil {
                 + "<html lang=\"en\">\n"
                 + "<head>\n"
                 + "<meta charset=\"UTF-8\">\n"
-                + "<title>ÏÂÔØ</title>\n"
+                + "<title>ä¸‹è½½</title>\n"
                 + "<script type=\"text/javascript\">\n"
                 + "var url = '" + plistPath + "';\n"
                 + "window.location.href = \"itms-services://?action=download-manifest&url=\" + url;\n"
@@ -114,9 +114,9 @@ public class createPlistUtil {
             writer.close();
             output.close();
         } catch (IOException e) {
-            System.err.println("==========´´½¨htmlÎÄ¼şÒì³££º" + e.getMessage());
+            System.err.println("==========åˆ›å»ºhtmlæ–‡ä»¶å¼‚å¸¸ï¼š" + e.getMessage());
         }
-        System.out.print("==========³É¹¦´´½¨htmlÎÄ¼ş");
+        System.out.print("==========æˆåŠŸåˆ›å»ºhtmlæ–‡ä»¶");
 
         return "success";
     }

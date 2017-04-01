@@ -26,18 +26,18 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 /**
- * ¶şÎ¬Âë¹¤¾ßÀà
+ * äºŒç»´ç å·¥å…·ç±»
  * 
  */
 public class QRCodeUtil {
 
 	private static final String CHARSET = "utf-8";
 	private static final String FORMAT_NAME = "jpg";
-	// ¶şÎ¬Âë³ß´ç
+	// äºŒç»´ç å°ºå¯¸
 	private static final int QRCODE_SIZE = 300;
-	// LOGO¿í¶È
+	// LOGOå®½åº¦
 	private static final int WIDTH = 80;
-	// LOGO¸ß¶È
+	// LOGOé«˜åº¦
 	private static final int HEIGHT = 80;
 
 	private static BufferedImage createImage(String content, String imgPath, boolean needCompress) throws Exception {
@@ -58,32 +58,32 @@ public class QRCodeUtil {
 		if (imgPath == null || "".equals(imgPath)) {
 			return image;
 		}
-		// ²åÈëÍ¼Æ¬
+		// æ’å…¥å›¾ç‰‡
 		QRCodeUtil.insertImage(image, imgPath, needCompress);
 		return image;
 	}
 
 	/**
-	 * ²åÈëLOGO
+	 * æ’å…¥LOGO
 	 * 
 	 * @param source
-	 *            ¶şÎ¬ÂëÍ¼Æ¬
+	 *            äºŒç»´ç å›¾ç‰‡
 	 * @param imgPath
-	 *            LOGOÍ¼Æ¬µØÖ·
+	 *            LOGOå›¾ç‰‡åœ°å€
 	 * @param needCompress
-	 *            ÊÇ·ñÑ¹Ëõ
+	 *            æ˜¯å¦å‹ç¼©
 	 * @throws Exception
 	 */
 	private static void insertImage(BufferedImage source, String imgPath, boolean needCompress) throws Exception {
 		File file = new File(imgPath);
 		if (!file.exists()) {
-			System.err.println("" + imgPath + "   ¸ÃÎÄ¼ş²»´æÔÚ£¡");
+			System.err.println("" + imgPath + "   è¯¥æ–‡ä»¶ä¸å­˜åœ¨ï¼");
 			return;
 		}
 		Image src = ImageIO.read(new File(imgPath));
 		int width = src.getWidth(null);
 		int height = src.getHeight(null);
-		if (needCompress) { // Ñ¹ËõLOGO
+		if (needCompress) { // å‹ç¼©LOGO
 			if (width > WIDTH) {
 				width = WIDTH;
 			}
@@ -93,11 +93,11 @@ public class QRCodeUtil {
 			Image image = src.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 			BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			Graphics g = tag.getGraphics();
-			g.drawImage(image, 0, 0, null); // »æÖÆËõĞ¡ºóµÄÍ¼
+			g.drawImage(image, 0, 0, null); // ç»˜åˆ¶ç¼©å°åçš„å›¾
 			g.dispose();
 			src = image;
 		}
-		// ²åÈëLOGO
+		// æ’å…¥LOGO
 		Graphics2D graph = source.createGraphics();
 		int x = (QRCODE_SIZE - width) / 2;
 		int y = (QRCODE_SIZE - height) / 2;
@@ -109,16 +109,16 @@ public class QRCodeUtil {
 	}
 
 	/**
-	 * Éú³É¶şÎ¬Âë(ÄÚÇ¶LOGO)
+	 * ç”ŸæˆäºŒç»´ç (å†…åµŒLOGO)
 	 * 
 	 * @param content
-	 *            ÄÚÈİ
+	 *            å†…å®¹
 	 * @param imgPath
-	 *            LOGOµØÖ·
+	 *            LOGOåœ°å€
 	 * @param destPath
-	 *            ´æ·ÅÄ¿Â¼
+	 *            å­˜æ”¾ç›®å½•
 	 * @param needCompress
-	 *            ÊÇ·ñÑ¹ËõLOGO
+	 *            æ˜¯å¦å‹ç¼©LOGO
 	 * @throws Exception
 	 */
 	public static String encode(String content, String imgPath, String destPath, boolean needCompress)
@@ -133,32 +133,32 @@ public class QRCodeUtil {
 	}
 
 	/**
-	 * µ±ÎÄ¼ş¼Ğ²»´æÔÚÊ±£¬mkdirs»á×Ô¶¯´´½¨¶à²ãÄ¿Â¼£¬Çø±ğÓÚmkdir£®(mkdirÈç¹û¸¸Ä¿Â¼²»´æÔÚÔò»áÅ×³öÒì³£)
+	 * å½“æ–‡ä»¶å¤¹ä¸å­˜åœ¨æ—¶ï¼Œmkdirsä¼šè‡ªåŠ¨åˆ›å»ºå¤šå±‚ç›®å½•ï¼ŒåŒºåˆ«äºmkdirï¼(mkdirå¦‚æœçˆ¶ç›®å½•ä¸å­˜åœ¨åˆ™ä¼šæŠ›å‡ºå¼‚å¸¸)
 	 * 
 	 * @author
 	 * @date
 	 * @param destPath
-	 *            ´æ·ÅÄ¿Â¼
+	 *            å­˜æ”¾ç›®å½•
 	 */
 	public static void mkdirs(String destPath) {
 		File file = new File(destPath);
-		// µ±ÎÄ¼ş¼Ğ²»´æÔÚÊ±£¬mkdirs»á×Ô¶¯´´½¨¶à²ãÄ¿Â¼£¬Çø±ğÓÚmkdir£®(mkdirÈç¹û¸¸Ä¿Â¼²»´æÔÚÔò»áÅ×³öÒì³£)
+		// å½“æ–‡ä»¶å¤¹ä¸å­˜åœ¨æ—¶ï¼Œmkdirsä¼šè‡ªåŠ¨åˆ›å»ºå¤šå±‚ç›®å½•ï¼ŒåŒºåˆ«äºmkdirï¼(mkdirå¦‚æœçˆ¶ç›®å½•ä¸å­˜åœ¨åˆ™ä¼šæŠ›å‡ºå¼‚å¸¸)
 		if (!file.exists() && !file.isDirectory()) {
 			file.mkdirs();
 		}
 	}
 
 	/**
-	 * Éú³É¶şÎ¬Âë(ÄÚÇ¶LOGO)
+	 * ç”ŸæˆäºŒç»´ç (å†…åµŒLOGO)
 	 * 
 	 * @param content
-	 *            ÄÚÈİ
+	 *            å†…å®¹
 	 * @param imgPath
-	 *            LOGOµØÖ·
+	 *            LOGOåœ°å€
 	 * @param output
-	 *            Êä³öÁ÷
+	 *            è¾“å‡ºæµ
 	 * @param needCompress
-	 *            ÊÇ·ñÑ¹ËõLOGO
+	 *            æ˜¯å¦å‹ç¼©LOGO
 	 * @throws Exception
 	 */
 	public static void encode(String content, String imgPath, OutputStream output, boolean needCompress)
@@ -168,12 +168,12 @@ public class QRCodeUtil {
 	}
 
 	/**
-	 * Éú³É¶şÎ¬Âë
+	 * ç”ŸæˆäºŒç»´ç 
 	 * 
 	 * @param content
-	 *            ÄÚÈİ
+	 *            å†…å®¹
 	 * @param output
-	 *            Êä³öÁ÷
+	 *            è¾“å‡ºæµ
 	 * @throws Exception
 	 */
 	public static void encode(String content, OutputStream output) throws Exception {
@@ -181,10 +181,10 @@ public class QRCodeUtil {
 	}
 
 	/**
-	 * ½âÎö¶şÎ¬Âë
+	 * è§£æäºŒç»´ç 
 	 * 
 	 * @param file
-	 *            ¶şÎ¬ÂëÍ¼Æ¬
+	 *            äºŒç»´ç å›¾ç‰‡
 	 * @return
 	 * @throws Exception
 	 */
@@ -205,10 +205,10 @@ public class QRCodeUtil {
 	}
 
 	/**
-	 * ½âÎö¶şÎ¬Âë
+	 * è§£æäºŒç»´ç 
 	 * 
 	 * @param path
-	 *            ¶şÎ¬ÂëÍ¼Æ¬µØÖ·
+	 *            äºŒç»´ç å›¾ç‰‡åœ°å€
 	 * @return
 	 * @throws Exception
 	 */

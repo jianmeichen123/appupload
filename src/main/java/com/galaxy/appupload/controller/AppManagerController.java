@@ -42,11 +42,11 @@ public class AppManagerController {
 	AppManagerService appManagerService;
 	@Resource
 	ValidDataFormat validDataFormat;
-	//×ªjson
+	//è½¬json
 	private RDataToJson  Ifinte= new RDataToJson();
 	
 	/**
-	 * Ìí¼ÓÓ¦ÓÃ
+	 * æ·»åŠ åº”ç”¨
 	 * @param applicationInfoBean
 	 * @param request
 	 * @param smallLogo
@@ -61,7 +61,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * ±£´æÓ¦ÓÃ
+	 * ä¿å­˜åº”ç”¨
 	 * @param applicationInfoBean
 	 * @param request
 	 * @param smallLogo
@@ -77,7 +77,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * Ìí¼Ó°æ±¾ĞÅÏ¢
+	 * æ·»åŠ ç‰ˆæœ¬ä¿¡æ¯
 	 * @param versionInfoBean
 	 * @param request
 	 * @param file
@@ -94,7 +94,7 @@ public class AppManagerController {
 		
 	}
 	/**
-	 * ±£´æ°æ±¾ĞÅÏ¢
+	 * ä¿å­˜ç‰ˆæœ¬ä¿¡æ¯
 	 * @param versionInfoBean
 	 * @param request
 	 * @param file
@@ -114,7 +114,7 @@ public class AppManagerController {
 		
 	}
 	/**
-	 * ÏÂÔØÒ³Ãæ
+	 * ä¸‹è½½é¡µé¢
 	 * @param applicationInfoBean
 	 * @param request
 	 * @param smallLogo
@@ -132,7 +132,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * »ñÈ¡°æ±¾ÀàĞÍĞÅÏ¢
+	 * è·å–ç‰ˆæœ¬ç±»å‹ä¿¡æ¯
 	 * @param versionInfoBean
 	 * @param request
 	 * @param file
@@ -146,7 +146,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * »ñÈ¡°æ±¾ºÅĞÅÏ¢
+	 * è·å–ç‰ˆæœ¬å·ä¿¡æ¯
 	 * @param versionInfoBean
 	 * @param request
 	 * @param file
@@ -159,7 +159,7 @@ public class AppManagerController {
 		return versionList;
 	}
 	/**
-	 * »ñÈ¡°æ±¾×´Ì¬ĞÅÏ¢
+	 * è·å–ç‰ˆæœ¬çŠ¶æ€ä¿¡æ¯
 	 * @param appname
 	 * @param apptype
 	 * @param request
@@ -172,7 +172,7 @@ public class AppManagerController {
 		return versionList;
 	}
 	/**
-	 * »ñÈ¡¶şÎ¬Âë
+	 * è·å–äºŒç»´ç 
 	 * @param request
 	 * @return
 	 */
@@ -185,7 +185,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * Éú³É¶şÎ¬Âë
+	 * ç”ŸæˆäºŒç»´ç 
 	 * @param appname
 	 * @param status
 	 * @param request
@@ -217,7 +217,7 @@ public class AppManagerController {
 	}
 	
 	/*
-	 * ¶şÎ¬ÂëÉ¨ÃèÏÂÔØ·½·¨
+	 * äºŒç»´ç æ‰«æä¸‹è½½æ–¹æ³•
 	 */
 	@RequestMapping("/qrCodeDownload")
 	@ResponseBody
@@ -248,7 +248,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * ÏÂÔØ¹¦ÄÜ½Ó¿Ú
+	 * ä¸‹è½½åŠŸèƒ½æ¥å£
 	 * @param request
 	 * @param response
 	 */
@@ -285,7 +285,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * ÏÂÔØ¹¦ÄÜ½Ó¿Ú
+	 * ä¸‹è½½åŠŸèƒ½æ¥å£
 	 * @param request
 	 * @param response
 	 */
@@ -294,7 +294,7 @@ public class AppManagerController {
 	public void appdownloadMethod(@RequestBody CheckVersionBean checkVersionBean,HttpServletRequest request,HttpServletResponse response){
 		String clientName = request.getHeader("clientName");
 		String clientVersion = request.getHeader("clientVersion");
-		log.info("ÇëÇóÏûÏ¢£ºclientName="+clientName+"clientVersion="+clientVersion+",systemType="+checkVersionBean.getSystemType()+",appcode="+checkVersionBean.getAppCode());
+		log.info("è¯·æ±‚æ¶ˆæ¯ï¼šclientName="+clientName+"clientVersion="+clientVersion+",systemType="+checkVersionBean.getSystemType()+",appcode="+checkVersionBean.getAppCode());
 		
 		OutputStream out = null;
 		String path="";
@@ -324,7 +324,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * ¼ì²â°æ±¾½Ó¿Ú
+	 * æ£€æµ‹ç‰ˆæœ¬æ¥å£
 	 * @param request
 	 * @param response
 	 * @return
@@ -341,24 +341,24 @@ public class AppManagerController {
 		String systemType = checkVersionBean.getSystemType();
 		String appcode = checkVersionBean.getAppCode();
 		
-		log.info("ÇëÇóÏûÏ¢£ºclientName="+clientName+"clientVersion="+clientVersion+",systemType="+systemType+",appcode="+appcode);
+		log.info("è¯·æ±‚æ¶ˆæ¯ï¼šclientName="+clientName+"clientVersion="+clientVersion+",systemType="+systemType+",appcode="+appcode);
 		
-		//ÒµÎñÂß¼­
+		//ä¸šåŠ¡é€»è¾‘
 		try {
-			//Ğ£Ñé
+			//æ ¡éªŒ
 			resmap=validDataFormat.validVersionInfo(resmap,clientName,clientVersion,systemType,appcode);
 			if(resmap.get(Static_Commond.STATE).equals(Static_Commond.TRUE)){
 				resp = Ifinte.getDataJson(resmap.get(Static_Commond.RESULTCODE),resmap.get(Static_Commond.RESMSG),"");
-				log.info("·µ»Ø½á¹û:"+resp);
+				log.info("è¿”å›ç»“æœ:"+resp);
 				return resp;
 			}
-			//»ñÈ¡°æ±¾ĞÅÏ¢
+			//è·å–ç‰ˆæœ¬ä¿¡æ¯
 			resp = appManagerService.getVersionInfo(clientName,systemType,appcode);
 			return resp;
 		} catch (Exception e) {
-			log.error("»ñÈ¡°æ±¾ĞÅÏ¢Òì³£:"+e);
+			log.error("è·å–ç‰ˆæœ¬ä¿¡æ¯å¼‚å¸¸:"+e);
 			resp = Ifinte.getDataJson(Static_Commond.ERROR, ReadProperties.getRescMap().get("error"),"");
-			log.info("·µ»Ø½á¹û:"+resp);
+			log.info("è¿”å›ç»“æœ:"+resp);
 			return resp;
 		}
 	}
