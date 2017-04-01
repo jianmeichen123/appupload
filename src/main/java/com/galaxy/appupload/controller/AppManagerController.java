@@ -184,15 +184,6 @@ public class AppManagerController {
 		
 	}
 	
-	//调整ios下载的html页面
-	@RequestMapping("jumpHtml")
-	public String jumpHtml(String nums,String appupload_url,HttpServletRequest request){
-		request.setAttribute("nums", nums);
-		request.setAttribute("appupload_url", appupload_url);
-		return "appmanager/iosDownload";
-		
-	}
-	
 	/**
 	 * 生成二维码
 	 * @param appname
@@ -231,7 +222,7 @@ public class AppManagerController {
 	@RequestMapping("/qrCodeDownload")
 	@ResponseBody
 	public void qrCodeDownload(String filePath,HttpServletRequest request,HttpServletResponse response){
-		//OutputStream out = null;
+		OutputStream out = null;
 		String path="";
 		try{
 			path = request.getSession().getServletContext().getRealPath("/")+filePath;
@@ -239,20 +230,20 @@ public class AppManagerController {
 			response.reset(); 
 			response.setContentType("application/octet-stream; charset=utf-8"); 
 			response.setHeader("Content-Disposition", "attachment; filename=" + file.getName()); 
-			//out = response.getOutputStream();
-			//out.write(FileUtils.readFileToByteArray(file)); 
+			out = response.getOutputStream();
+			out.write(FileUtils.readFileToByteArray(file)); 
 			IOUtils.copy(new FileInputStream(file), response.getOutputStream());
-			//out.flush();
+			out.flush();
 		}catch(Exception e){
 			e.printStackTrace();
-//		}finally { 
-//			if (out != null) { 
-//				try{
-//					out.close();
-//				}catch (IOException e) {
-//					e.printStackTrace(); 
-//				}
-//			} 
+		}finally { 
+			if (out != null) { 
+				try{
+					out.close();
+				}catch (IOException e) {
+					e.printStackTrace(); 
+				}
+			} 
 		} 
 	}
 	

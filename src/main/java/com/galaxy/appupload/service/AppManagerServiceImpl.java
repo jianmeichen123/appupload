@@ -112,13 +112,11 @@ public class AppManagerServiceImpl implements AppManagerService{
 		ApplicationInfoBean application = appManagerDao.getAppBean(appcode,type);
 		if(application!=null){
 			if(!(StringUtils.isNullOrEmpty(bigPath)) && !(StringUtils.isNullOrEmpty(application.getLogoBigFile()))){
-				//File fl =new File(System.getProperty("user.dir")+"\\src\\main\\webapp\\"+application.getLogoBigFile());
 				File fl =new File(request.getSession().getServletContext().getRealPath("/")+"\\"+application.getLogoBigFile());
 				fl.delete();
 				fl.getParentFile().delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(smallPath)) && !(StringUtils.isNullOrEmpty(application.getLogoSmallFile()))){
-				//File f2 =new File(System.getProperty("user.dir")+"\\src\\main\\webapp\\"+application.getLogoSmallFile());
 				File f2 =new File(request.getSession().getServletContext().getRealPath("/")+"\\"+application.getLogoSmallFile());
 				f2.delete();
 				f2.getParentFile().delete();
@@ -198,20 +196,18 @@ public class AppManagerServiceImpl implements AppManagerService{
 		}
 		
 		//创建plist方法
-		//File ipafile =new File(request.getSession().getServletContext().getRealPath("/")+"\\"+filePath);
 		String appupload_url = ReadProperties.getRescMap().get("appupload_url");
-		//String iosfile = ipafile.getParentFile().toString();
-		createplist(path,appupload_url+filePath,version,request);
 		
-		//生成二维码
-		if("Ios".equals(apptype)){
-			qr=request.getScheme()+"://"+ request.getServerName()+":"+request.getServerPort()+"/appManagerHtml.action?nums="+nums+"&appupload_url="+appupload_url;
+		if("Ios".equals(apptype)||"ios".equals(apptype)){
+			//创建plist方法
+			createplist(path,appupload_url+filePath,version,request);
+			//String url = ReadProperties.getRescMap().get("url");
+			qr=appupload_url+"download/app.action?nums="+nums+"&appupload_url="+appupload_url;
 		}else{
 			qr =appupload_url+filePath;
 		}
-		//String requestUrl = request.getScheme()+"://"+ request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+		//生成二维码
 		//String qr ="http://192.168.99.212:8080/appupload/appManager/qrCodeDownload.action?filePath="+filePath;
-		//String qr =requestUrl+"/appManager/qrCodeDownload.action?filePath="+filePath;
 		String qrcode = QRCodeUtil.encode(qr, "",qrpath, true);
 		
 		
@@ -229,8 +225,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 			if(!(StringUtils.isNullOrEmpty(filePath)) && !(StringUtils.isNullOrEmpty(info.getFilepath()))){
 				File f2 =new File(request.getSession().getServletContext().getRealPath("/")+"\\"+info.getFilepath());
 				File f3 =new File(f2.getParentFile().toString()+"\\"+"stars.plist");
-				f2.delete();
-				f3.delete();
+				if(f2.isFile() && f2.exists()){
+					f2.delete();
+				}
+				if(f3.isFile() && f3.exists()){
+					f3.delete();
+				}
 				f2.getParentFile().delete();
 			}
 			info.setCreateTime(ff.format(date));
@@ -318,12 +318,14 @@ public class AppManagerServiceImpl implements AppManagerService{
 	 */
 	@Override
 	public String getVersionInfo(String clientName, String systemType, String appCode) {
-		R_versionInfoBean r_versionInfo = new R_versionInfoBean();
-		
 		String resp="";
 		int flag=0;
 		String dataValue="";
 		
+		R_versionInfoBean r_versionInfo = new R_versionInfoBean();
+		String appupload_url = ReadProperties.getRescMap().get("appupload_url");
+		
+		//获取appid
 		String appid = appManagerDao.getAppId(clientName,systemType);
 		if(!StringUtils.isNullOrEmpty(appid)){
 			if("beta".equals(appCode)){
@@ -331,15 +333,23 @@ public class AppManagerServiceImpl implements AppManagerService{
 			}else if("release".equals(appCode)){
 				flag=1;
 			}
+			//执行dao
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("appid", appid);
 			params.put("appcode", flag);
-			
 			VersionInfoBean versionInfoBean = appManagerDao.getNewVersionInfo(params);
 			if(versionInfoBean!=null){
+				if("Ios".equals(systemType)||"ios".equals(systemType)){
+					//String httpurl = ReadProperties.getRescMap().get("url");
+					String[] ss = versionInfoBean.getFilepath().split("\\\\");
+					String url =appupload_url+"download/app.action?nums="+ss[1]+"&appupload_url="+appupload_url;
+					r_versionInfo.setUrl(url);
+				}else{
+					r_versionInfo.setUrl(ReadProperties.getRescMap().get("appupload_url")+versionInfoBean.getFilepath());
+				}
 				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
-				r_versionInfo.setUrl(ReadProperties.getRescMap().get("iosDownload_url"));
 				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
+				//gson转json
 				dataValue = gson.toJson(r_versionInfo);
 				// 获取消息json字符串
 				resp = Ifinte.getDataJson(Static_Commond.SUCCESS,  ReadProperties.getRescMap().get("success"),dataValue);
@@ -377,66 +387,80 @@ public class AppManagerServiceImpl implements AppManagerService{
 	}
 	
 	//生成plist文件方法
-	public void createplist(String iosfile,String ipa, String version, HttpServletRequest request) throws IOException {
-		System.out.println("==========开始创建plist文件");
+	public void createplist(String iosfile,String ipa, String version, HttpServletRequest request){
+		log.info("创建plist文件开始");
 		String path = iosfile+"\\"+"stars.plist";
-		
-		// 创建文档类型
-		DocType docType = new DocType("plist");
-		docType.setPublicID("-//Apple//DTD PLIST 1.0//EN");
-		docType.setSystemID("http://www.apple.com/DTDs/PropertyList-1.0.dtd");
-		// 创建根节点 plist
-		Element root = new Element("plist");
-		root.setAttribute("version", "1.0");
-		//
-		Element rootDict = new Element("dict");
-		rootDict.addContent(new Element("key").setText("items"));
-		Element rootDictArray = new Element("array");
-		Element rootDictArrayDict = new Element("dict");
-		rootDictArrayDict.addContent(new Element("key").setText("assets"));
-
-
-		Element rootDictArrayDictArray = new Element("array");
-		Element rootDictArrayDictArrayDict1 = new Element("dict");
-		rootDictArrayDictArrayDict1.addContent(new Element("key")
-		.setText("kind"));
-		rootDictArrayDictArrayDict1.addContent(new Element("string")
-		.setText("software-package"));
-		rootDictArrayDictArrayDict1.addContent(new Element("key")
-		.setText("url"));
-		rootDictArrayDictArrayDict1.addContent(new Element("string")
-		.setText(ipa));
-
-		rootDictArrayDictArray.addContent(rootDictArrayDictArrayDict1);
-		rootDictArrayDict.addContent(rootDictArrayDictArray);
-		rootDictArrayDict.addContent(new Element("key").setText("metadata"));
-
-		Element rootDictArrayDictDict = new Element("dict");
-		rootDictArrayDictDict.addContent(new Element("key")
-		.setText("bundle-identifier"));
-		rootDictArrayDictDict.addContent(new Element("string")
-		.setText("com.galaxyinternet.galaxystars"));
-		rootDictArrayDictDict.addContent(new Element("key")
-		.setText("bundle-version"));
-		rootDictArrayDictDict.addContent(new Element("string").setText(version));
-		rootDictArrayDictDict.addContent(new Element("key").setText("kind"));
-		rootDictArrayDictDict.addContent(new Element("string")
-		.setText("software"));
-		rootDictArrayDictDict.addContent(new Element("key").setText("title"));
-		rootDictArrayDictDict.addContent(new Element("string").setText("繁星"));
-		rootDictArrayDict.addContent(rootDictArrayDictDict);
-
-		rootDictArray.addContent(rootDictArrayDict);
-		rootDict.addContent(rootDictArray);
-		root.addContent(rootDict);
-		// 根节点添加到文档中;
-		Document Doc = new Document(root, docType);
-		Format format = Format.getPrettyFormat();
-		XMLOutputter XMLOut = new XMLOutputter(format);
-		// 输出 user.xml 文件；
-		FileOutputStream fos = new FileOutputStream(new File(path));
-		XMLOut.output(Doc, fos);
-		// XMLOut.output(Doc);
+		FileOutputStream fos = null;
+		try {
+			// 创建文档类型
+			DocType docType = new DocType("plist");
+			docType.setPublicID("-//Apple//DTD PLIST 1.0//EN");
+			docType.setSystemID("http://www.apple.com/DTDs/PropertyList-1.0.dtd");
+			// 创建根节点 plist
+			Element root = new Element("plist");
+			root.setAttribute("version", "1.0");
+			//
+			Element rootDict = new Element("dict");
+			rootDict.addContent(new Element("key").setText("items"));
+			Element rootDictArray = new Element("array");
+			Element rootDictArrayDict = new Element("dict");
+			rootDictArrayDict.addContent(new Element("key").setText("assets"));
+	
+	
+			Element rootDictArrayDictArray = new Element("array");
+			Element rootDictArrayDictArrayDict1 = new Element("dict");
+			rootDictArrayDictArrayDict1.addContent(new Element("key")
+			.setText("kind"));
+			rootDictArrayDictArrayDict1.addContent(new Element("string")
+			.setText("software-package"));
+			rootDictArrayDictArrayDict1.addContent(new Element("key")
+			.setText("url"));
+			rootDictArrayDictArrayDict1.addContent(new Element("string")
+			.setText(ipa.replace("\\", "/")));
+	
+			rootDictArrayDictArray.addContent(rootDictArrayDictArrayDict1);
+			rootDictArrayDict.addContent(rootDictArrayDictArray);
+			rootDictArrayDict.addContent(new Element("key").setText("metadata"));
+	
+			Element rootDictArrayDictDict = new Element("dict");
+			rootDictArrayDictDict.addContent(new Element("key")
+			.setText("bundle-identifier"));
+			rootDictArrayDictDict.addContent(new Element("string")
+			.setText("com.galaxyinternet.galaxystars"));
+			rootDictArrayDictDict.addContent(new Element("key")
+			.setText("bundle-version"));
+			rootDictArrayDictDict.addContent(new Element("string").setText(version));
+			rootDictArrayDictDict.addContent(new Element("key").setText("kind"));
+			rootDictArrayDictDict.addContent(new Element("string")
+			.setText("software"));
+			rootDictArrayDictDict.addContent(new Element("key").setText("title"));
+			rootDictArrayDictDict.addContent(new Element("string").setText("繁星"));
+			rootDictArrayDict.addContent(rootDictArrayDictDict);
+	
+			rootDictArray.addContent(rootDictArrayDict);
+			rootDict.addContent(rootDictArray);
+			root.addContent(rootDict);
+			// 根节点添加到文档中;
+			Document Doc = new Document(root, docType);
+			Format format = Format.getPrettyFormat();
+			XMLOutputter XMLOut = new XMLOutputter(format);
+			// 输出 user.xml 文件；
+			fos = new FileOutputStream(new File(path));
+			XMLOut.output(Doc, fos);
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.info("创建plist文件异常");
+		}finally{
+			if(fos!=null){
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					log.info("创建plist文件异常");
+				}
+			}
+		}
+		log.info("创建plist文件成功");
 	}
 	 
 }

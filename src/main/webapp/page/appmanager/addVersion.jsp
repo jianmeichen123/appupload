@@ -11,19 +11,23 @@
 
 <style type="text/css">
 #appName{
-width:150px;
+width:180px;
 height: 25px;
 }
 #appType{
-width:150px;
+width:180px;
+height: 25px;
+}
+#version{
+width:180px;
 height: 25px;
 }
 #file{
-width:150px;
+width:180px;
 height: 25px;
 }
 #status{
-width:150px;
+width:180px;
 height: 25px;
 }
 </style> 
@@ -82,7 +86,7 @@ height: 25px;
 			<tr>
 				<td>版本型号：</td>
 				<td>
-					<input type="text" style="width:145px;height:20px;" name="version" id="version">
+					<input type="text" style="width:175px;height:20px;" name="version" id="version">
 					<span style="color: red;width:auto">*</span>
 					<font color="red" id="versioninfo"></font>
 				</td>

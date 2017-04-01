@@ -13,7 +13,7 @@
 *{ margin:0; padding:0;}
 #demo{ margin:50px auto; width:198px; min-height:40px; background:#CF9}
 #systemType{
-width:150px;
+width:180px;
 height: 25px;
 }
 </style> 
@@ -32,7 +32,7 @@ height: 25px;
 			<tr>
 				<td>应用名称：</td>
 				<td>
-					<input type="text" style="width:145px;height:20px;" name="appcode" id="appcode">
+					<input type="text" style="width:177px;height:20px;" name="appcode" id="appcode">
 					<span style="color:red;width:auto">*</span>
             		<font color="red" id="codeinfo"></font>
 				</td>
