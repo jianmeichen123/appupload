@@ -3,9 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.galaxy.appupload</groupId>
 	<artifactId>appupload</artifactId>
-	<version>1.0</version>
 	<packaging>war</packaging>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -79,7 +77,6 @@
 			</resource>
 		</resources>
 	</build>
-
 	<!-- 不同环境配置 -->
 	<profiles>
 		<profile>
