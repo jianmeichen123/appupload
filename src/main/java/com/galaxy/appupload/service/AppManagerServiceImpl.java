@@ -390,7 +390,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	//生成plist文件方法
 	public void createplist(String iosfile,String ipa, String version, HttpServletRequest request){
 		log.info("创建plist文件开始");
-		String path = iosfile+"\\"+"stars.plist";
+		String path = iosfile+"/"+"stars.plist";
 		FileOutputStream fos = null;
 		try {
 			// 创建文档类型
