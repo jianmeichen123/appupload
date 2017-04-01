@@ -336,21 +336,24 @@ public class AppManagerController {
 		resmap.put(Static_Commond.STATE, Static_Commond.FALSE);
 		String resp ="";
 		
-		String clientName = request.getHeader("clientName");
-		String clientVersion = request.getHeader("clientVersion");
-		log.info("请求消息：clientName="+clientName+"clientVersion="+clientVersion+",systemType="+checkVersionBean.getSystemType()+",appcode="+checkVersionBean.getAppCode());
+		String clientName = checkVersionBean.getClientName();
+		String clientVersion = checkVersionBean.getClientVersion();
+		String systemType = checkVersionBean.getSystemType();
+		String appcode = checkVersionBean.getAppCode();
+		
+		log.info("请求消息：clientName="+clientName+"clientVersion="+clientVersion+",systemType="+systemType+",appcode="+appcode);
 		
 		//业务逻辑
 		try {
 			//校验
-			resmap=validDataFormat.validVersionInfo(resmap,clientName,clientVersion,checkVersionBean.getSystemType(),checkVersionBean.getAppCode());
+			resmap=validDataFormat.validVersionInfo(resmap,clientName,clientVersion,systemType,appcode);
 			if(resmap.get(Static_Commond.STATE).equals(Static_Commond.TRUE)){
 				resp = Ifinte.getDataJson(resmap.get(Static_Commond.RESULTCODE),resmap.get(Static_Commond.RESMSG),"");
 				log.info("返回结果:"+resp);
 				return resp;
 			}
 			//获取版本信息
-			resp = appManagerService.getVersionInfo(clientName,checkVersionBean.getSystemType(),checkVersionBean.getAppCode());
+			resp = appManagerService.getVersionInfo(clientName,systemType,appcode);
 			return resp;
 		} catch (Exception e) {
 			log.error("获取版本信息异常:"+e);
