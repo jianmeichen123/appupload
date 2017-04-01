@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,9 @@ public class AppManagerServiceImpl implements AppManagerService{
 	@Autowired
 	AppManagerDao appManagerDao;
 	
+	String upload_url = ReadProperties.getRescMap().get("upload_url");
+	String appupload_url = ReadProperties.getRescMap().get("appupload_url");
+	
 	/**
 	 * 保存应用方法
 	 */
@@ -52,6 +56,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	public int saveApplication(ApplicationInfoBean applicationInfoBean, HttpServletRequest request,MultipartFile smallLogo, MultipartFile bigLogo) {
 		String smallPath = "";
 		String bigPath = "";
+		
 		//获取页面信息
 		String appcode = request.getParameter("appcode");
 		String systemType = request.getParameter("systemType");
@@ -70,14 +75,14 @@ public class AppManagerServiceImpl implements AppManagerService{
 				String nums = getRandomString(6);
 				// 数据库保存的文件类型
 				String attachType = s1[1];
-				String path = request.getSession().getServletContext().getRealPath("/")+"\\file"+"\\"+nums+"\\";
+				String path = upload_url+"\\imgs"+"\\"+nums+"\\";
 				String basePath =  path + s1[0] + "." + attachType;
 				File files = new File(basePath);
 				if(!files.exists() && !files.mkdirs()){
 					files.mkdirs();
 				}
 				smallLogo.transferTo(new File(basePath));
-				smallPath = "file" + basePath.split("file")[1];
+				smallPath = "imgs" + basePath.split("imgs")[1];
 				applicationInfoBean.setLogoSmallFile(smallPath);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -90,14 +95,14 @@ public class AppManagerServiceImpl implements AppManagerService{
 	        	String nums = getRandomString(6);
 				// 数据库保存的文件类型
 				String attachType = s1[1];
-				String path = request.getSession().getServletContext().getRealPath("/")+"\\file"+"\\"+nums+"\\";
+				String path = upload_url+"\\imgs"+"\\"+nums+"\\";
 				String basePath =  path + s1[0] + "." + attachType;
 				File files = new File(basePath);
 				if(!files.exists() && !files.mkdirs()){
 					files.mkdirs();
 				}
 				bigLogo.transferTo(new File(basePath));
-				bigPath = "file" + basePath.split("file")[1];
+				bigPath = "imgs" + basePath.split("imgs")[1];
 				applicationInfoBean.setLogoBigFile(bigPath);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -112,12 +117,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 		ApplicationInfoBean application = appManagerDao.getAppBean(appcode,type);
 		if(application!=null){
 			if(!(StringUtils.isNullOrEmpty(bigPath)) && !(StringUtils.isNullOrEmpty(application.getLogoBigFile()))){
-				File fl =new File(request.getSession().getServletContext().getRealPath("/")+"\\"+application.getLogoBigFile());
+				File fl =new File(upload_url+"\\"+application.getLogoBigFile());
 				fl.delete();
 				fl.getParentFile().delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(smallPath)) && !(StringUtils.isNullOrEmpty(application.getLogoSmallFile()))){
-				File f2 =new File(request.getSession().getServletContext().getRealPath("/")+"\\"+application.getLogoSmallFile());
+				File f2 =new File(upload_url+"\\"+application.getLogoSmallFile());
 				f2.delete();
 				f2.getParentFile().delete();
 			}
@@ -142,7 +147,6 @@ public class AppManagerServiceImpl implements AppManagerService{
 	@Override
 	public int saveVersion(VersionInfoBean versionInfoBean, HttpServletRequest request, MultipartFile file) throws Exception {
 		String filePath = "";
-		String qrpath ="";
 		String path ="";
 		int result =0;
 		String fileName="";
@@ -178,11 +182,9 @@ public class AppManagerServiceImpl implements AppManagerService{
 				String[] s1 = file.getOriginalFilename().split("\\.");
 				// 数据库保存的文件类型
 				String attachType = s1[1];
-				
-				path = request.getSession().getServletContext().getRealPath("/")+"file"+"\\"+nums+"\\";
+				path = upload_url+"\\file"+"\\"+nums+"\\";
 				String basePath =  path + s1[0] + "." + attachType;
 				
-				qrpath = request.getSession().getServletContext().getRealPath("/");
 				File files = new File(basePath);
 				if(!files.exists() && !files.mkdirs()){
 					files.mkdirs();
@@ -195,21 +197,16 @@ public class AppManagerServiceImpl implements AppManagerService{
 			}
 		}
 		
-		//创建plist方法
-		String appupload_url = ReadProperties.getRescMap().get("appupload_url");
-		
 		if("Ios".equals(apptype)||"ios".equals(apptype)){
 			//创建plist方法
 			createplist(path,appupload_url+filePath,version,request);
-			//String url = ReadProperties.getRescMap().get("url");
 			qr=appupload_url+"download/app.action?nums="+nums+"&appupload_url="+appupload_url;
 		}else{
 			qr =appupload_url+filePath;
 		}
 		//生成二维码
 		//String qr ="http://192.168.99.212:8080/appupload/appManager/qrCodeDownload.action?filePath="+filePath;
-		String qrcode = QRCodeUtil.encode(qr, "",qrpath, true);
-		
+		String qrcode = QRCodeUtil.encode(qr, "",upload_url, true);
 		
 		//dao判断
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -218,12 +215,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 		params.put("vstatus", vstatus);
 		VersionInfoBean info = appManagerDao.isExistVersion(params);
 		if(info!=null){
-			File fl =new File(request.getSession().getServletContext().getRealPath("/")+"\\"+info.getQrCode());
+			File fl =new File(upload_url+"\\"+info.getQrCode());
 			if(fl.isFile() && fl.exists()){
 				fl.delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(filePath)) && !(StringUtils.isNullOrEmpty(info.getFilepath()))){
-				File f2 =new File(request.getSession().getServletContext().getRealPath("/")+"\\"+info.getFilepath());
+				File f2 =new File(upload_url+"\\"+info.getFilepath());
 				File f3 =new File(f2.getParentFile().toString()+"\\"+"stars.plist");
 				if(f2.isFile() && f2.exists()){
 					f2.delete();
@@ -323,7 +320,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		String dataValue="";
 		
 		R_versionInfoBean r_versionInfo = new R_versionInfoBean();
-		String appupload_url = ReadProperties.getRescMap().get("appupload_url");
+		List<R_versionInfoBean> versionlist = new ArrayList<R_versionInfoBean>();
 		
 		//获取appid
 		String appid = appManagerDao.getAppId(clientName,systemType);
@@ -333,6 +330,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			}else if("release".equals(appCode)){
 				flag=1;
 			}
+			
 			//执行dao
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("appid", appid);
@@ -340,17 +338,20 @@ public class AppManagerServiceImpl implements AppManagerService{
 			VersionInfoBean versionInfoBean = appManagerDao.getNewVersionInfo(params);
 			if(versionInfoBean!=null){
 				if("Ios".equals(systemType)||"ios".equals(systemType)){
-					//String httpurl = ReadProperties.getRescMap().get("url");
 					String[] ss = versionInfoBean.getFilepath().split("\\\\");
 					String url =appupload_url+"download/app.action?nums="+ss[1]+"&appupload_url="+appupload_url;
 					r_versionInfo.setUrl(url);
 				}else{
-					r_versionInfo.setUrl(ReadProperties.getRescMap().get("appupload_url")+versionInfoBean.getFilepath());
+					r_versionInfo.setUrl(appupload_url+versionInfoBean.getFilepath().replace("\\", "/"));
 				}
 				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
 				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
+				
 				//gson转json
-				dataValue = gson.toJson(r_versionInfo);
+				versionlist.add(r_versionInfo);
+				if(versionlist.size()>0){
+					dataValue = gson.toJson(versionlist);
+				}
 				// 获取消息json字符串
 				resp = Ifinte.getDataJson(Static_Commond.SUCCESS,  ReadProperties.getRescMap().get("success"),dataValue);
 				log.info("返回结果:"+resp);

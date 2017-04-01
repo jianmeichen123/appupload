@@ -123,7 +123,7 @@ public class QRCodeUtil {
 	 */
 	public static String encode(String content, String imgPath, String destPath, boolean needCompress)
 			throws Exception {
-		String dealPath = "file"+"\\QRCode" + "\\";
+		String dealPath = "\\QRCode" + "\\";
 		BufferedImage image = QRCodeUtil.createImage(content, imgPath, needCompress);
 		mkdirs(destPath + "\\"+dealPath);
 		String path = destPath+ "\\" + dealPath;
