@@ -1,10 +1,14 @@
 package com.galaxy.appupload.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.sf.json.JSONObject;
 
 
 public class RDataToJson {
-	//List list = new ArrayList();
+	@SuppressWarnings("rawtypes")
+	List list = new ArrayList();
 	
 	// 返回json
 	public String getDataJson(String code,String msg,String data){
@@ -15,7 +19,7 @@ public class RDataToJson {
 		//base64加密
 		json.put("respMsg", Base64Coding.encode(msg));
 		if(data.equals("")||data==null){
-			json.put("data", "");
+			json.put("data", list);
 		}else{
 			json.put("data",data);
 		}
