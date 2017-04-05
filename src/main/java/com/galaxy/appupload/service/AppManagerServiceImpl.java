@@ -44,6 +44,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	//获取路径
 	String upload_url = ReadProperties.getRescMap().get("upload_url");
 	String appupload_url = ReadProperties.getRescMap().get("appupload_url");
+	String appFiles_url = ReadProperties.getRescMap().get("appFiles_url");
 	//转换器json
 	Gson gson = new Gson();
 	private RDataToJson  Ifinte= new RDataToJson();
@@ -117,12 +118,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 		ApplicationInfoBean application = appManagerDao.getAppBean(appcode,type);
 		if(application!=null){
 			if(!(StringUtils.isNullOrEmpty(bigPath)) && !(StringUtils.isNullOrEmpty(application.getLogoBigFile()))){
-				File fl =new File(upload_url+"/"+application.getLogoBigFile());
+				File fl =new File(appFiles_url+"/"+application.getLogoBigFile());
 				fl.delete();
 				fl.getParentFile().delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(smallPath)) && !(StringUtils.isNullOrEmpty(application.getLogoSmallFile()))){
-				File f2 =new File(upload_url+"/"+application.getLogoSmallFile());
+				File f2 =new File(appFiles_url+"/"+application.getLogoSmallFile());
 				f2.delete();
 				f2.getParentFile().delete();
 			}
@@ -204,11 +205,11 @@ public class AppManagerServiceImpl implements AppManagerService{
 		
 		if("Ios".equals(apptype)||"ios".equals(apptype)){
 			//创建plist方法
-			String ipa =upload_url+"/"+filePath;
+			String ipa =appFiles_url+"/"+filePath;
 			createplist(path,ipa,version,request);
-			qr=appupload_url+"download/app.action?nums="+nums+"&appupload_url="+appupload_url;
+			qr=appupload_url+"download/app.action?nums="+nums+"&appFiles_url="+appFiles_url;
 		}else{
-			qr =appupload_url+filePath;
+			qr =appFiles_url+filePath;
 		}
 		//生成二维码
 		//String qr ="http://192.168.99.212:8080/appupload/appManager/qrCodeDownload.action?filePath="+filePath;
@@ -221,12 +222,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 		params.put("vstatus", vstatus);
 		VersionInfoBean info = appManagerDao.isExistVersion(params);
 		if(info!=null){
-			File fl =new File(upload_url+"/"+info.getQrCode());
+			File fl =new File(appFiles_url+"/"+info.getQrCode());
 			if(fl.isFile() && fl.exists()){
 				fl.delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(filePath)) && !(StringUtils.isNullOrEmpty(info.getFilepath()))){
-				File f2 =new File(upload_url+"/"+info.getFilepath());
+				File f2 =new File(appFiles_url+"/"+info.getFilepath());
 				File f3 =new File(f2.getParentFile().toString()+"/"+"stars.plist");
 				if(f2.isFile() && f2.exists()){
 					f2.delete();
@@ -345,10 +346,10 @@ public class AppManagerServiceImpl implements AppManagerService{
 			if(versionInfoBean!=null){
 				if("Ios".equals(systemType)||"ios".equals(systemType)){
 					String[] ss = versionInfoBean.getFilepath().split("/");
-					String url =appupload_url+"download/app.action?nums="+ss[1]+"&appupload_url="+appupload_url;
+					String url =appupload_url+"download/app.action?nums="+ss[1]+"&appFiles_url="+appFiles_url;
 					r_versionInfo.setUrl(url);
 				}else{
-					r_versionInfo.setUrl(appupload_url+versionInfoBean.getFilepath());
+					r_versionInfo.setUrl(appFiles_url+versionInfoBean.getFilepath());
 				}
 				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
 				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());

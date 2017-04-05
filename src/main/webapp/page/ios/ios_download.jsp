@@ -40,7 +40,7 @@
 			
 			//点击iphone下载
 			$("#btn_downloadapp").click(function(){
-				location.href = 'itms-services://?action=download-manifest&url=${appupload_url}file/${nums}/stars.plist';
+				location.href = 'itms-services://?action=download-manifest&url=${appFiles_url}file/${nums}/stars.plist';
 				//just_main();
 				
 				setTimeout("just_main()", 3000);  

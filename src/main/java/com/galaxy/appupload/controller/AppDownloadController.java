@@ -25,23 +25,23 @@ public class AppDownloadController {
 	}
 
 	@RequestMapping("/download/app")
-	public String downloadApp(String nums,String appupload_url,HttpServletRequest request){
+	public String downloadApp(String nums,String appFiles_url,HttpServletRequest request){
 		request.setAttribute("nums", nums);
-		request.setAttribute("appupload_url", appupload_url);
+		request.setAttribute("appFiles_url", appFiles_url);
 		return "download_app";
 	}
 	
 	@RequestMapping("/ios/download")
-	public String iosDownload(String nums,String appupload_url,HttpServletRequest request){
+	public String iosDownload(String nums,String appFiles_url,HttpServletRequest request){
 		request.setAttribute("nums", nums);
-		request.setAttribute("appupload_url", appupload_url);
+		request.setAttribute("appFiles_url", appFiles_url);
 		return "ios/ios_download";
 	}
 	
 	@RequestMapping("/ios/masking")
-	public String iosDownloadMasking(String nums,String appupload_url,HttpServletRequest request){
+	public String iosDownloadMasking(String nums,String appFiles_url,HttpServletRequest request){
 		request.setAttribute("nums", nums);
-		request.setAttribute("appupload_url", appupload_url);
+		request.setAttribute("appFiles_url", appFiles_url);
 		return "ios/ios_download_masking";
 	}
 	

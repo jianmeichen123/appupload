@@ -289,45 +289,6 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * 下载功能接口（暂时不用）
-	 * @param request
-	 * @param response
-	 */
-	@RequestMapping("/appdownload")
-	@ResponseBody
-	public void appdownloadMethod(@RequestBody CheckVersionBean checkVersionBean,HttpServletRequest request,HttpServletResponse response){
-		String clientName = request.getHeader("clientName");
-		String clientVersion = request.getHeader("clientVersion");
-		log.info("请求消息：clientName="+clientName+"clientVersion="+clientVersion+",systemType="+checkVersionBean.getSystemType()+",appcode="+checkVersionBean.getAppCode());
-		
-		OutputStream out = null;
-		String path="";
-		try{
-			VersionInfoBean versionInfoBean = appManagerService.downloadFile(clientName,checkVersionBean.getSystemType(),checkVersionBean.getAppCode());
-			if(versionInfoBean!=null){
-				path = request.getSession().getServletContext().getRealPath("/")+"\\"+versionInfoBean.getFilepath();
-				File file = new File(path);
-				response.reset(); 
-				response.setContentType("application/octet-stream; charset=utf-8"); 
-				response.setHeader("Content-Disposition", "attachment; filename=" + file.getName()); 
-				out = response.getOutputStream();
-				out.write(FileUtils.readFileToByteArray(file)); 
-				out.flush();
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally { 
-			if (out != null) { 
-				try{
-					out.close();
-				}catch (IOException e) {
-					e.printStackTrace(); 
-				}
-			} 
-		} 
-	}
-	
-	/**
 	 * 检测版本接口
 	 * @param request
 	 * @param response
@@ -398,5 +359,37 @@ public class AppManagerController {
 			}
 		}
 	}  
+	
+	/**
+	 * 下载功能接口（暂时不用）
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/appdownload")
+	@ResponseBody
+	public void appdownloadMethod(String filepath,HttpServletRequest request,HttpServletResponse response){
+		OutputStream out = null;
+		String path="";
+		try{
+			path = upload_url + '/' + filepath;
+			File file = new File(path);
+			response.reset(); 
+			response.setContentType("application/octet-stream; charset=utf-8"); 
+			response.setHeader("Content-Disposition", "attachment; filename=" + file.getName()); 
+			out = response.getOutputStream();
+			out.write(FileUtils.readFileToByteArray(file)); 
+			out.flush();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally { 
+			if (out != null) { 
+				try{
+					out.close();
+				}catch (IOException e) {
+					e.printStackTrace(); 
+				}
+			} 
+		} 
+	}
 	
 }
