@@ -185,11 +185,10 @@ public class AppManagerServiceImpl implements AppManagerService{
 		//app文件获取
 		if (!file.isEmpty()) {
 			try {
-				String[] s1 = file.getOriginalFilename().split("\\.");
+				fileName =file.getOriginalFilename();
 				// 数据库保存的文件类型
-				String attachType = s1[1];
 				path = upload_url+"/file"+"/"+nums+"/";
-				String basePath =  path + s1[0] + "." + attachType;
+				String basePath =  path + fileName;
 				
 				File files = new File(basePath);
 				if(!files.exists() && !files.mkdirs()){
@@ -197,7 +196,6 @@ public class AppManagerServiceImpl implements AppManagerService{
 				}
 				file.transferTo(new File(basePath));
 				filePath = "file" + basePath.split("file")[1];
-				fileName=s1[0] + "." + attachType;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
