@@ -321,7 +321,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	 * 获取最新版本信息
 	 */
 	@Override
-	public String getVersionInfo(String clientName, String systemType, String appCode) {
+	public String getVersionInfo(String clientName, String clientVersion,String systemType, String appCode) {
 		String resp="";
 		int flag=0;
 		String dataValue="";
@@ -342,7 +342,8 @@ public class AppManagerServiceImpl implements AppManagerService{
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("appid", appid);
 			params.put("appcode", flag);
-			VersionInfoBean versionInfoBean = appManagerDao.getNewVersionInfo(params);
+			params.put("versionNO", clientVersion);
+			VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
 			if(versionInfoBean!=null){
 				if("Ios".equals(systemType)||"ios".equals(systemType)){
 					String[] ss = versionInfoBean.getFilepath().split("/");

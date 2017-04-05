@@ -175,4 +175,19 @@
 		<result column="logo_big_file" property="logoBigFile"/>
 		<result column="logo_small_file" property="logoSmallFile"/>
 	</resultMap>
+	
+	<!-- 获取最新版本信息-->
+	<select id="getCheckVersionInfo" parameterType="java.util.Map" resultType="VersionInfoBean" resultMap="checkVersion">
+		SELECT * FROM versioninfo WHERE version_no>#{versionNO} and app_id=#{appid} and version_status=#{appcode} ORDER BY version_no desc LIMIT 1;
+	</select>
+	<resultMap type="VersionInfoBean" id="checkVersion">
+		<id column="id" property="id"/>
+		<result column="version_no" property="versionNo"/>
+		<result column="create_time" property="createTime"></result>
+		<result column="file_name" property="filename"/>
+		<result column="file_path" property="filepath"/>
+		<result column="update_log" property="updatelog"/>
+		<result column="app_id" property="appid"/>
+		<result column="qr_code" property="qrCode"/>
+	</resultMap>
 </mapper>

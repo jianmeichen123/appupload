@@ -69,7 +69,7 @@ public interface AppManagerService {
 	 * @param appCode2 
 	 * @return
 	 */
-	public String getVersionInfo(String clientName, String systemType, String appCode);
+	public String getVersionInfo(String clientName, String clientVersion,String systemType, String appCode);
 	/**
 	 * 通过appid ，status，获取最新版本信息
 	 * @param id

@@ -318,7 +318,7 @@ public class AppManagerController {
 				return resp;
 			}
 			//获取版本信息
-			resp = appManagerService.getVersionInfo(clientName,systemType,appcode);
+			resp = appManagerService.getVersionInfo(clientName,clientVersion,systemType,appcode);
 			return resp;
 		} catch (Exception e) {
 			log.error("获取版本信息异常:"+e);

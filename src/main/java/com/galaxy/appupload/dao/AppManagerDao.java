@@ -88,6 +88,12 @@ public interface AppManagerDao {
 	 * @return
 	 */
 	public ApplicationInfoBean getAppBean(String appcode, String type);
+	/**
+	 * 版本检测获取最新且大于当前版本信息
+	 * @param params
+	 * @return
+	 */
+	public VersionInfoBean getCheckVersionInfo(Map<String, Object> params);
 	
 
 }
