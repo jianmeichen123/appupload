@@ -13,9 +13,9 @@
 	    	alert("对不起,不支持Android系统，请退出！");
 	    }else if(tools.isIOS){
 	    	if(tools.isSafari){
-		    	document.location = path + "/ios/download?nums=${nums}&appupload_url=${appupload_url}";
+		    	document.location = path + "/ios/download?nums=${nums}&appFiles_url=${appFiles_url}";
 		    }else{
-		    	document.location = path + "/ios/masking?nums=${nums}&appupload_url=${appupload_url}";
+		    	document.location = path + "/ios/masking?nums=${nums}&appFiles_url=${appFiles_url}";
 		    }
 	    }else{
 	    	alert("对不起,不支持该系统，请退出！");
