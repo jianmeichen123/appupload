@@ -209,7 +209,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			createplist(path,ipa,version,request);
 			qr=appupload_url+"download/app.action?nums="+nums+"&appFiles_url="+appFiles_url;
 		}else{
-			qr =appFiles_url+filePath;
+			qr =appFiles_url+"/"+filePath;
 		}
 		//生成二维码
 		//String qr ="http://192.168.99.212:8080/appupload/appManager/qrCodeDownload.action?filePath="+filePath;
@@ -349,7 +349,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 					String url =appupload_url+"download/app.action?nums="+ss[1]+"&appFiles_url="+appFiles_url;
 					r_versionInfo.setUrl(url);
 				}else{
-					r_versionInfo.setUrl(appFiles_url+versionInfoBean.getFilepath());
+					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
 				}
 				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
 				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
