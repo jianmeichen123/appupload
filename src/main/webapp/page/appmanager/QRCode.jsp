@@ -86,9 +86,9 @@ function getQRcode(){
             	$("#error").empty();
             	for(var key in data) { 
             	    if(key=="ios"){
-            	    	$("#ios").append("<span style='padding-left:5px'>ios：</span></br><img src='<%=request.getContextPath()%>/"+data[key]+"' style='width:150px;height:150px'/>");
+            	    	$("#ios").append("<span style='padding-left:5px'>ios：</span></br><img src='<%=request.getContextPath()%>/appManager/showImage.action?filepath="+data[key]+"' style='width:150px;height:150px'/>");
             	    }else if(key=="android"){
-            	    	$("#android").append("<span style='padding-left:5px'>android：</span></br><img src='<%=request.getContextPath()%>/"+data[key]+"' style='width:150px;height:150px'/>");
+            	    	$("#android").append("<span style='padding-left:5px'>android：</span></br><img src='<%=request.getContextPath()%>/appManager/showImage.action?filepath="+data[key]+"' style='width:150px;height:150px'/>");
             	    }
             	} 
             }else{

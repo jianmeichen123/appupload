@@ -3,6 +3,7 @@ package com.galaxy.appupload.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -38,12 +39,15 @@ import com.galaxy.appupload.validData.ValidDataFormat;
 public class AppManagerController {
 	
 	private static final Logger log = LoggerFactory.getLogger(AppManagerController.class);
+	//转json
+	private RDataToJson  Ifinte= new RDataToJson();
+	//获取上传文件本地保存路径
+	String upload_url = ReadProperties.getRescMap().get("upload_url");
+	
 	@Resource
 	AppManagerService appManagerService;
 	@Resource
 	ValidDataFormat validDataFormat;
-	//转json
-	private RDataToJson  Ifinte= new RDataToJson();
 	
 	/**
 	 * 添加应用
@@ -172,7 +176,7 @@ public class AppManagerController {
 		return versionList;
 	}
 	/**
-	 * 获取二维码
+	 * 获取二维码页面
 	 * @param request
 	 * @return
 	 */
@@ -217,7 +221,7 @@ public class AppManagerController {
 	}
 	
 	/*
-	 * 二维码扫描下载方法
+	 * 二维码扫描下载方法（暂时不用）
 	 */
 	@RequestMapping("/qrCodeDownload")
 	@ResponseBody
@@ -248,7 +252,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * 下载功能接口
+	 * 页面下载功能接口
 	 * @param request
 	 * @param response
 	 */
@@ -262,7 +266,7 @@ public class AppManagerController {
 		try{
 			VersionInfoBean versionInfoBean = appManagerService.downloadFile(code,type,version);
 			if(versionInfoBean!=null){
-				path = request.getSession().getServletContext().getRealPath("/")+"\\"+versionInfoBean.getFilepath();
+				path = upload_url+"/"+versionInfoBean.getFilepath();
 				File file = new File(path);
 				response.reset(); 
 				response.setContentType("application/octet-stream; charset=utf-8"); 
@@ -285,7 +289,7 @@ public class AppManagerController {
 	}
 	
 	/**
-	 * 下载功能接口
+	 * 下载功能接口（暂时不用）
 	 * @param request
 	 * @param response
 	 */
@@ -362,5 +366,37 @@ public class AppManagerController {
 			return resp;
 		}
 	}
+	
+	//获取本地磁盘上的图片
+	@RequestMapping("showImage")  
+	public void showImage(String filepath, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		InputStream inputStream = null;
+		OutputStream writer = null;
+		
+		try {
+			inputStream = new FileInputStream(new File(upload_url + '/' + filepath));
+			writer = response.getOutputStream();
+
+			byte[] buf = new byte[1024];
+			int len = 0;
+			while ((len = inputStream.read(buf)) != -1) {
+				writer.write(buf, 0, len); // 写
+			}
+			inputStream.close();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (writer != null) {
+					writer.close();
+				}
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
+		}
+	}  
 	
 }

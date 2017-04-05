@@ -39,15 +39,17 @@ import com.mysql.jdbc.StringUtils;
 
 @Service(value="appManagerService")
 public class AppManagerServiceImpl implements AppManagerService{
+	
 	private static final Logger log = LoggerFactory.getLogger(AppManagerController.class);
-	//转换器
-	Gson gson = new Gson();
-	private RDataToJson  Ifinte= new RDataToJson();
-	@Autowired
-	AppManagerDao appManagerDao;
 	//获取路径
 	String upload_url = ReadProperties.getRescMap().get("upload_url");
 	String appupload_url = ReadProperties.getRescMap().get("appupload_url");
+	//转换器json
+	Gson gson = new Gson();
+	private RDataToJson  Ifinte= new RDataToJson();
+	
+	@Autowired
+	AppManagerDao appManagerDao;
 	
 	/**
 	 * 保存应用方法
@@ -56,22 +58,24 @@ public class AppManagerServiceImpl implements AppManagerService{
 	public int saveApplication(ApplicationInfoBean applicationInfoBean, HttpServletRequest request,MultipartFile smallLogo, MultipartFile bigLogo) {
 		String smallPath = "";
 		String bigPath = "";
+		String type="";
+		int result=0;
 		
+		//生成32位ID
+		String ID = UUIDGenerator.getUUID();
 		//获取页面信息
 		String appcode = request.getParameter("appcode");
 		String systemType = request.getParameter("systemType");
-		String type="";
 		if("0".equals(systemType)){
 			type="Ios";
 		}else{
 			type="Android";
 		}
-		applicationInfoBean.setSystemType(type);
-		applicationInfoBean.setAppcode(appcode);
 		//小图标获取
 		if (!smallLogo.isEmpty()) {
 			try {
 				String[] s1 = smallLogo.getOriginalFilename().split("\\.");
+				//生成随机6位数据
 				String nums = getRandomString(6);
 				// 数据库保存的文件类型
 				String attachType = s1[1];
@@ -83,7 +87,6 @@ public class AppManagerServiceImpl implements AppManagerService{
 				}
 				smallLogo.transferTo(new File(basePath));
 				smallPath = "imgs" + basePath.split("imgs")[1];
-				applicationInfoBean.setLogoSmallFile(smallPath);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -92,6 +95,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		if (!bigLogo.isEmpty()) {
 	        try {
 	        	String[] s1 = bigLogo.getOriginalFilename().split("\\.");
+	        	//生成随机6位数据
 	        	String nums = getRandomString(6);
 				// 数据库保存的文件类型
 				String attachType = s1[1];
@@ -103,17 +107,13 @@ public class AppManagerServiceImpl implements AppManagerService{
 				}
 				bigLogo.transferTo(new File(basePath));
 				bigPath = "imgs" + basePath.split("imgs")[1];
-				applicationInfoBean.setLogoBigFile(bigPath);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} 
 
 		}
-		//生成32位ID
-		String ID = UUIDGenerator.getUUID();
-		applicationInfoBean.setId(ID);
+		
 		//dao
-		int result=0;
 		ApplicationInfoBean application = appManagerDao.getAppBean(appcode,type);
 		if(application!=null){
 			if(!(StringUtils.isNullOrEmpty(bigPath)) && !(StringUtils.isNullOrEmpty(application.getLogoBigFile()))){
@@ -135,6 +135,11 @@ public class AppManagerServiceImpl implements AppManagerService{
 			}
 			result=1;
 		}else{
+			applicationInfoBean.setId(ID);
+			applicationInfoBean.setSystemType(type);
+			applicationInfoBean.setAppcode(appcode);
+			applicationInfoBean.setLogoSmallFile(smallPath);
+			applicationInfoBean.setLogoBigFile(bigPath);
 			result = appManagerDao.saveApplication(applicationInfoBean);
 		}
 		return result;
@@ -199,7 +204,8 @@ public class AppManagerServiceImpl implements AppManagerService{
 		
 		if("Ios".equals(apptype)||"ios".equals(apptype)){
 			//创建plist方法
-			createplist(path,appupload_url+filePath,version,request);
+			String ipa =upload_url+"/"+filePath;
+			createplist(path,ipa,version,request);
 			qr=appupload_url+"download/app.action?nums="+nums+"&appupload_url="+appupload_url;
 		}else{
 			qr =appupload_url+filePath;
@@ -370,7 +376,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		}
 	}
 	
-	//随机生成n位数据
+	//随机生成n位随机数据
 	public String getRandomString(int n){
 		char[] str1 = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 		int i;
@@ -388,7 +394,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 	}
 	
 	//生成plist文件方法
-	public void createplist(String iosfile,String ipa, String version, HttpServletRequest request){
+	public void createplist(String iosfile,String ipapath, String version, HttpServletRequest request){
 		log.info("创建plist文件开始");
 		String path = iosfile+"/"+"stars.plist";
 		FileOutputStream fos = null;
@@ -417,9 +423,40 @@ public class AppManagerServiceImpl implements AppManagerService{
 			rootDictArrayDictArrayDict1.addContent(new Element("key")
 			.setText("url"));
 			rootDictArrayDictArrayDict1.addContent(new Element("string")
-			.setText(ipa.replace("\\", "/")));
+			.setText(ipapath));
+			
+			Element rootDictArrayDictArrayDict2 = new Element("dict");
+			rootDictArrayDictArrayDict2.addContent(new Element("key")
+			.setText("kind"));
+			rootDictArrayDictArrayDict2.addContent(new Element("string")
+			.setText("display-image"));
+			rootDictArrayDictArrayDict2.addContent(new Element("key")
+			.setText("needs-shine"));
+			rootDictArrayDictArrayDict2.addContent(new Element("true")
+			.setText(""));
+			rootDictArrayDictArrayDict2.addContent(new Element("key")
+			.setText("url"));
+			rootDictArrayDictArrayDict2.addContent(new Element("string")
+			.setText(""));
+			
+			Element rootDictArrayDictArrayDict3 = new Element("dict");
+			rootDictArrayDictArrayDict3.addContent(new Element("key")
+			.setText("kind"));
+			rootDictArrayDictArrayDict3.addContent(new Element("string")
+			.setText("full-size-image"));
+			rootDictArrayDictArrayDict3.addContent(new Element("key")
+			.setText("needs-shine"));
+			rootDictArrayDictArrayDict3.addContent(new Element("true")
+			.setText(""));
+			rootDictArrayDictArrayDict3.addContent(new Element("key")
+			.setText("url"));
+			rootDictArrayDictArrayDict3.addContent(new Element("string")
+			.setText(""));
+
 	
 			rootDictArrayDictArray.addContent(rootDictArrayDictArrayDict1);
+			rootDictArrayDictArray.addContent(rootDictArrayDictArrayDict2);
+			rootDictArrayDictArray.addContent(rootDictArrayDictArrayDict3);
 			rootDictArrayDict.addContent(rootDictArrayDictArray);
 			rootDictArrayDict.addContent(new Element("key").setText("metadata"));
 	
