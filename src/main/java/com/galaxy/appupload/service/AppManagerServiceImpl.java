@@ -118,15 +118,14 @@ public class AppManagerServiceImpl implements AppManagerService{
 		ApplicationInfoBean application = appManagerDao.getAppBean(appcode,type);
 		if(application!=null){
 			if(!(StringUtils.isNullOrEmpty(bigPath)) && !(StringUtils.isNullOrEmpty(application.getLogoBigFile()))){
-				File fl =new File(appFiles_url+"/"+application.getLogoBigFile());
+				File fl =new File(upload_url+"/"+application.getLogoBigFile());
 				if(fl.isFile() && fl.exists()){
-					log.info("shanchu=================");
 					fl.delete();
 					fl.getParentFile().delete();
 				}
 			}
 			if(!(StringUtils.isNullOrEmpty(smallPath)) && !(StringUtils.isNullOrEmpty(application.getLogoSmallFile()))){
-				File f2 =new File(appFiles_url+"/"+application.getLogoSmallFile());
+				File f2 =new File(upload_url+"/"+application.getLogoSmallFile());
 				if(f2.isFile() && f2.exists()){
 					f2.delete();
 					f2.getParentFile().delete();
@@ -225,12 +224,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 		params.put("vstatus", vstatus);
 		VersionInfoBean info = appManagerDao.isExistVersion(params);
 		if(info!=null){
-			File fl =new File(appFiles_url+"/"+info.getQrCode());
+			File fl =new File(upload_url+"/"+info.getQrCode());
 			if(fl.isFile() && fl.exists()){
 				fl.delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(filePath)) && !(StringUtils.isNullOrEmpty(info.getFilepath()))){
-				File f2 =new File(appFiles_url+"/"+info.getFilepath());
+				File f2 =new File(upload_url+"/"+info.getFilepath());
 				File f3 =new File(f2.getParentFile().toString()+"/"+"stars.plist");
 				if(f2.isFile() && f2.exists()){
 					f2.delete();
