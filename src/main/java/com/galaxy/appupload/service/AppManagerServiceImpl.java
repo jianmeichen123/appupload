@@ -119,11 +119,13 @@ public class AppManagerServiceImpl implements AppManagerService{
 		if(application!=null){
 			if(!(StringUtils.isNullOrEmpty(bigPath)) && !(StringUtils.isNullOrEmpty(application.getLogoBigFile()))){
 				File fl =new File(appFiles_url+"/"+application.getLogoBigFile());
+				log.info("路径========"+fl+appFiles_url+application.getLogoBigFile());
 				fl.delete();
 				fl.getParentFile().delete();
 			}
 			if(!(StringUtils.isNullOrEmpty(smallPath)) && !(StringUtils.isNullOrEmpty(application.getLogoSmallFile()))){
 				File f2 =new File(appFiles_url+"/"+application.getLogoSmallFile());
+				log.info("路径========"+f2+appFiles_url+application.getLogoSmallFile());
 				f2.delete();
 				f2.getParentFile().delete();
 			}
