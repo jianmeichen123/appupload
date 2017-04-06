@@ -30,8 +30,6 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/appManager/**"/>
-			<mvc:mapping path="/download/**"/>
-			<mvc:mapping path="/ios/**"/>
 			<bean class="com.galaxy.appupload.interceptor.CommonInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

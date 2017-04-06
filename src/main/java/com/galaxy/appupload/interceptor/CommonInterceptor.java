@@ -13,10 +13,8 @@ public class CommonInterceptor extends HandlerInterceptorAdapter{
             HttpServletResponse response, Object handler) throws Exception {
         //登录action
     	String loginUrl="/login/userLogin";
-    	//扫描二维码action
-    	String qrCodeUrl="/download/app";
     	//1、请求到登录页面 放行,不拦截登录action
-        if(request.getServletPath().startsWith(loginUrl)||request.getServletPath().startsWith(qrCodeUrl)) {  
+        if(request.getServletPath().startsWith(loginUrl)) {  
             return true;  
         }  
         //2、如果用户已经登录 放行    
