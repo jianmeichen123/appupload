@@ -13,8 +13,10 @@ public class CommonInterceptor extends HandlerInterceptorAdapter{
             HttpServletResponse response, Object handler) throws Exception {
         //登录action
     	String loginUrl="/login/userLogin";
+    	String checkUrl="/appManager/checkVersion";
+    	
     	//1、请求到登录页面 放行,不拦截登录action
-        if(request.getServletPath().startsWith(loginUrl)) {  
+        if(request.getServletPath().startsWith(loginUrl)||request.getServletPath().startsWith(checkUrl)) {  
             return true;  
         }  
         //2、如果用户已经登录 放行    
