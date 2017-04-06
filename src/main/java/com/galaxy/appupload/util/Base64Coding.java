@@ -84,10 +84,10 @@ public class Base64Coding {
 	  //main方法
 	  public static void main(String[] args)
 	  {
-		  //Base64Coding base = new Base64Coding();
-		  //String a = base.encode("Hello World");
-		  //String b = base.decode("Y2hlbmtl");
-		  //System.out.println(b);
-		  //System.out.println(b);
+		  /*Base64Coding base = new Base64Coding();
+		  String a = base.encode("123456");
+		  String b = base.decode("MTIzNDU2");
+		  System.out.println(a);
+		  System.out.println(b);*/
 	  }
 }

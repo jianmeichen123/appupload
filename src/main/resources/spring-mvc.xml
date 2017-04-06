@@ -27,6 +27,15 @@
 	<mvc:annotation-driven/>
 	<mvc:default-servlet-handler/>
 	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/appManager/**"/>
+			<mvc:mapping path="/download/**"/>
+			<mvc:mapping path="/ios/**"/>
+			<bean class="com.galaxy.appupload.interceptor.CommonInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
 	<bean
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 	    <property name="viewResolvers">
@@ -49,6 +58,4 @@
 	
 	<!-- 支持上传文件 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />  
-	   
-	
 </beans>

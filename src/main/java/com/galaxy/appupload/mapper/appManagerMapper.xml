@@ -176,7 +176,7 @@
 		<result column="logo_small_file" property="logoSmallFile"/>
 	</resultMap>
 	
-	<!-- 获取最新版本信息-->
+	<!-- 版本检测接口获取最新版本信息-->
 	<select id="getCheckVersionInfo" parameterType="java.util.Map" resultType="VersionInfoBean" resultMap="checkVersion">
 		SELECT * FROM versioninfo WHERE version_no>#{versionNO} and app_id=#{appid} and version_status=#{appcode} ORDER BY version_no desc LIMIT 1;
 	</select>
@@ -190,4 +190,5 @@
 		<result column="app_id" property="appid"/>
 		<result column="qr_code" property="qrCode"/>
 	</resultMap>
+	
 </mapper>
