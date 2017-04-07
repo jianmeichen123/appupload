@@ -221,15 +221,14 @@ public class AppManagerController {
 	}
 	
 	/*
-	 * 二维码扫描下载方法（暂时不用）
+	 * 二维码扫描下载方法
 	 */
 	@RequestMapping("/qrCodeDownload")
 	@ResponseBody
 	public void qrCodeDownload(String filePath,HttpServletRequest request,HttpServletResponse response){
 		OutputStream out = null;
-		//String path="";
 		try{
-			//path = request.getSession().getServletContext().getRealPath("/")+filePath;
+			log.info("文件下载地址："+filePath);
 			File file = new File(filePath);
 			response.reset(); 
 			response.setContentType("application/octet-stream; charset=utf-8"); 
@@ -238,6 +237,7 @@ public class AppManagerController {
 			out.write(FileUtils.readFileToByteArray(file)); 
 			IOUtils.copy(new FileInputStream(file), response.getOutputStream());
 			out.flush();
+			log.info("文件下载地址转换成功");
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally { 
