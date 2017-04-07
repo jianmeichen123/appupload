@@ -68,7 +68,7 @@
 	</div>
 	
 	<div id="ifr_container" style="overflow: hidden;">
-		<img src="${path }/img/xiazai.png" style="width: 100%;"/>
+		<img src="${path }/img/xiazai.jpg" style="width: 100%;"/>
 	</div>
 </body>
 </html>

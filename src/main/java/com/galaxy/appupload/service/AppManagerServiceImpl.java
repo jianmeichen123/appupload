@@ -209,12 +209,12 @@ public class AppManagerServiceImpl implements AppManagerService{
 			//创建plist方法
 			String ipa =appFiles_url+"/"+filePath;
 			createplist(path,ipa,version,request);
-			qr=appupload_url+"download/app.action?nums="+nums+"&appFiles_url="+appFiles_url;
+			qr=appupload_url+"download/app.action?nums="+nums+"&appFiles_url="+appFiles_url+"&apptype="+apptype;
 		}else{
-			qr =appFiles_url+"/"+filePath;
+			String app_url = appFiles_url+"/"+filePath;
+			qr =appupload_url+"download/androidApp.action?app_url="+app_url+"&apptype="+apptype;
 		}
 		//生成二维码
-		//String qr ="http://192.168.99.212:8080/appupload/appManager/qrCodeDownload.action?filePath="+filePath;
 		String qrcode = QRCodeUtil.encode(qr, "",upload_url, true);
 		
 		//dao判断

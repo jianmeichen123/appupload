@@ -23,11 +23,12 @@ public class AppDownloadController {
 		}
 		return "index";
 	}
-
+	//ios
 	@RequestMapping("/download/app")
-	public String downloadApp(String nums,String appFiles_url,HttpServletRequest request){
+	public String downloadApp(String nums,String appFiles_url,String apptype,HttpServletRequest request){
 		request.setAttribute("nums", nums);
 		request.setAttribute("appFiles_url", appFiles_url);
+		request.setAttribute("apptype", apptype);
 		return "download_app";
 	}
 	
@@ -48,6 +49,25 @@ public class AppDownloadController {
 	@RequestMapping("/ios/success")
 	public String iosDownloadSuccess(){
 		return "ios/ios_setup_success";
+	}
+	
+	//android
+	@RequestMapping("/download/androidApp")
+	public String downloadAndroidApp(String app_url,String apptype,HttpServletRequest request){
+		request.setAttribute("app_url", app_url);
+		request.setAttribute("apptype", apptype);
+		return "download_app";
+	}
+	@RequestMapping("/android/masking")
+	public String androidDownloadMasking(String app_url,HttpServletRequest request){
+		request.setAttribute("app_url", app_url);
+		return "android/android_download_masking";
+	}
+	
+	@RequestMapping("/android/success")
+	public String androidDownloadSuccess(String app_url,HttpServletRequest request){
+		request.setAttribute("app_url", app_url);
+		return "android/android_setup_success";
 	}
 	
 }

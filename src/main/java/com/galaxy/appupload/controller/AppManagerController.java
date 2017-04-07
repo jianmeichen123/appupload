@@ -227,10 +227,10 @@ public class AppManagerController {
 	@ResponseBody
 	public void qrCodeDownload(String filePath,HttpServletRequest request,HttpServletResponse response){
 		OutputStream out = null;
-		String path="";
+		//String path="";
 		try{
-			path = request.getSession().getServletContext().getRealPath("/")+filePath;
-			File file = new File(path);
+			//path = request.getSession().getServletContext().getRealPath("/")+filePath;
+			File file = new File(filePath);
 			response.reset(); 
 			response.setContentType("application/octet-stream; charset=utf-8"); 
 			response.setHeader("Content-Disposition", "attachment; filename=" + file.getName()); 

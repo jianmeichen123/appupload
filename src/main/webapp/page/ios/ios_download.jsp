@@ -55,7 +55,7 @@
 </head>
 <body>
 	<div id="div_container" style="width: 300px;height: 100px;align: center;margin-left: auto;margin-right: auto;z-index: 200;">
-		<img id="img_background" alt="" src="${path }/img/xiazai.png">
+		<img id="img_background" alt="" src="${path }/img/xiazai.jpg">
 		<div style="height: 800px;">
 			<div style="height: 35%;">&nbsp;</div>
 			<div style="height: 50%;" align="center">

@@ -14,9 +14,9 @@ public class CommonInterceptor extends HandlerInterceptorAdapter{
         //登录action
     	String loginUrl="/login/userLogin";
     	String checkUrl="/appManager/checkVersion";
-    	
+    	String qrCodeUrl="/appManager/qrCodeDownload";
     	//1、请求到登录页面 放行,不拦截登录action
-        if(request.getServletPath().startsWith(loginUrl)||request.getServletPath().startsWith(checkUrl)) {  
+        if(request.getServletPath().startsWith(loginUrl)||request.getServletPath().startsWith(checkUrl)||request.getServletPath().startsWith(qrCodeUrl)) {  
             return true;  
         }  
         //2、如果用户已经登录 放行    
