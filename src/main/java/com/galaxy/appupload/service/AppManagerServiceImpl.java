@@ -211,7 +211,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			createplist(path,ipa,version,request);
 			qr=appupload_url+"download/app.action?nums="+nums+"&appFiles_url="+appFiles_url+"&apptype="+apptype;
 		}else{
-			String app_url = appFiles_url+"/"+filePath;
+			String app_url = upload_url+"/"+filePath;
 			qr =appupload_url+"download/androidApp.action?app_url="+app_url+"&apptype="+apptype;
 		}
 		//生成二维码
