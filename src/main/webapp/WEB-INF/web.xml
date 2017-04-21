@@ -54,7 +54,7 @@
 	
 	 <!-- 设置session失效，单位分 -->
 	 <session-config>
-	  	<session-timeout>2</session-timeout>
+	  	<session-timeout>10</session-timeout>
 	 </session-config>
  
 </web-app>
