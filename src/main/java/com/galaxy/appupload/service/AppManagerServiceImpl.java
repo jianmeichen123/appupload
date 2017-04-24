@@ -352,7 +352,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 					String url =appupload_url+"download/app.action?nums="+ss[1]+"&appFiles_url="+appFiles_url;
 					r_versionInfo.setUrl(url);
 				}else{
-					r_versionInfo.setUrl(upload_url+"/"+versionInfoBean.getFilepath());
+					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
 				}
 				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
 				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
