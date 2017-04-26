@@ -294,7 +294,7 @@ public class AppManagerController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping("checkVersion")
+	@RequestMapping(value="checkVersion",produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String checkVersionMethod(@RequestBody CheckVersionBean checkVersionBean,HttpServletRequest request){
 		Map<String,String> resmap=new HashMap<String,String>();

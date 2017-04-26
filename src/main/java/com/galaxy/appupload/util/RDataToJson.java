@@ -15,9 +15,9 @@ public class RDataToJson {
 		
 		JSONObject json = new JSONObject();
 		json.put("resultCode", code);
-		//json.put("respMsg",msg);
+		json.put("respMsg",msg);
 		//base64加密
-		json.put("respMsg", Base64Coding.encode(msg));
+		//json.put("respMsg", Base64Coding.encode(msg));
 		if(data.equals("")||data==null){
 			json.put("data", list);
 		}else{
