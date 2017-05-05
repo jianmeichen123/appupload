@@ -68,7 +68,7 @@
 <body style="overflow: hidden;" scrolling="no">  
 	<div id="div_masking" style="position: absolute;background: url(${path}/img/beijing_2x.png);z-index: 1000;overflow: hidden;">
 		<img id="img_guest" alt="" src="${path }/img/andriod-zhixiang_3x.png" style="position: absolute;right: 50px;top: 30px;width: 220px;height: 400px;">
-		<div style="position: absolute;width: 100%;height: 80px;bottom: 100px;line-height: 80px;font-size: 36px;color: #fff;" align="center">
+		<div style="position: absolute;width: 100%;height: 80px;bottom: 50px;line-height: 80px;font-size: 36px;color: #fff;" align="center">
 			仅限：<img alt="" src="${path }/img/andriod_2x.png"/>&nbsp;android用户  
 		</div>
 	</div>
