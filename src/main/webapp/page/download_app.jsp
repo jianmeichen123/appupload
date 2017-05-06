@@ -21,9 +21,9 @@
 	    }else if(tools.isIOS){
 	    	if('${apptype}'=='ios'||'${apptype}'=='Ios'){
 	    		if(tools.isSafari){
-			    	document.location = path + "/ios/download?nums=${nums}&appFiles_url=${appFiles_url}";
+			    	document.location = path + "/ios/download?appFiles_url=${appFiles_url}";
 			    }else{
-			    	document.location = path + "/ios/masking?nums=${nums}&appFiles_url=${appFiles_url}";
+			    	document.location = path + "/ios/masking?appFiles_url=${appFiles_url}";
 			    }
 	    	}else{
 	    		alert("对不起,此安装包仅支持Android系统，请退出！");

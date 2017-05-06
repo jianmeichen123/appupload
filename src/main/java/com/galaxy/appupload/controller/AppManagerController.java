@@ -263,8 +263,9 @@ public class AppManagerController {
 		String code = request.getParameter("appName");
 		String type = request.getParameter("appType");
 		String version = request.getParameter("version");
+		String status = request.getParameter("status");
 		try{
-			VersionInfoBean versionInfoBean = appManagerService.downloadFile(code,type,version);
+			VersionInfoBean versionInfoBean = appManagerService.downloadFile(code,type,version,status);
 			if(versionInfoBean!=null){
 				path = upload_url+"/"+versionInfoBean.getFilepath();
 				File file = new File(path);

@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Hashtable;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -121,16 +120,22 @@ public class QRCodeUtil {
 	 *            是否压缩LOGO
 	 * @throws Exception
 	 */
-	public static String encode(String content, String imgPath, String destPath, boolean needCompress)
+	public static String encode(String content, String imgPath, String destPath, boolean needCompress,String apptype,int vstatus)
 			throws Exception {
-		String dealPath = "QRCode";
+		String dealPath="";
+		//判断测试版，发布版
+		if(vstatus==0){
+			dealPath = "QRCode/bate";
+		}else{
+			dealPath = "QRCode/release";
+		}
 		String path = destPath +'/'+ dealPath;
 		BufferedImage image = QRCodeUtil.createImage(content, imgPath, needCompress);
 		File files = new File(path);
 		if(!files.exists() && !files.mkdirs()){
 			files.mkdirs();
 		}
-		String file = new Random().nextInt(99999999) + ".jpg";
+		String file = apptype+".jpg";
 		ImageIO.write(image, FORMAT_NAME, new File(path + "/" + file));
 		return dealPath +'/'+file;
 	}
@@ -221,7 +226,7 @@ public class QRCodeUtil {
 
 	public static void main(String[] args) throws Exception {
 		String text = "http://www.baidu.com";
-		QRCodeUtil.encode(text, "", "E:/file", true);
+		QRCodeUtil.encode(text, "", "E:/file", true,"",0);
 	}
 
 	public static void qrcode(String content, String destPath, String imgPath, boolean needCompress, String basePath)

@@ -17,7 +17,7 @@
 			var element = doc.documentElement;
 			
 		    if(tools.isSafari){
-		    	document.location = path + "/ios/download?nums=${nums}&appFiles_url=${appFiles_url}";
+		    	document.location = path + "/ios/download?appFiles_url=${appFiles_url}";
 		    }
 		    
 		  	//只有当终端不是PC的时候执行，判断横竖屏并执行相关方法

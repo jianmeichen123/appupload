@@ -1,6 +1,7 @@
 package com.galaxy.appupload.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -158,20 +159,20 @@ public class AppManagerServiceImpl implements AppManagerService{
 	public int saveVersion(VersionInfoBean versionInfoBean, HttpServletRequest request, MultipartFile file) throws Exception {
 		String filePath = "";
 		String path ="";
+		String oldPath ="";
+		String basePath="";
 		int result =0;
 		String fileName="";
 		int vstatus=0;
 		String qr="";
 		
-		//获取6位随机数
-		String nums = getRandomString(6);
 		//从页面获取值
 		String appcode = request.getParameter("appName");
 		String apptype = request.getParameter("appType");
 		String version = request.getParameter("version");
 		String describe = request.getParameter("describe");
 		String status = request.getParameter("status");
-		
+		//版本判断
 		if("0".equals(status)){
 			vstatus=0;
 		}else{
@@ -190,10 +191,68 @@ public class AppManagerServiceImpl implements AppManagerService{
 		if (!file.isEmpty()) {
 			try {
 				fileName =file.getOriginalFilename();
-				// 数据库保存的文件类型
-				path = upload_url+"/file"+"/"+nums+"/";
-				String basePath =  path + fileName;
 				
+				//判断类型,之前上传的版本备份的路径
+				if(apptype.equals("Android")||apptype.equals("android")){
+					if(vstatus==0){
+						path = upload_url+"/file"+"/bate";
+						oldPath = upload_url+"/file/android/bate";
+					}else{
+						path = upload_url+"/file"+"/release";
+						oldPath = upload_url+"/file"+"/android/release";
+					}
+					
+				}else{
+					if(vstatus==0){
+						path = upload_url+"/file"+"/bate";
+						oldPath = upload_url+"/file/ios/bate";
+					}else{
+						path = upload_url+"/file"+"/release";
+						oldPath = upload_url+"/file/ios/release";
+					}
+				}
+				
+				//当前最新版本路径
+				basePath =  path +"/"+fileName;
+				
+				//上传文件之前做备份且更新数据
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("fileName", fileName);
+				params.put("status", status);
+				VersionInfoBean ver = appManagerDao.getVersionInfo(params);
+				if(ver!=null){
+					String a[] = fileName.split("\\.");
+					//备份的文件名：stars_1.0.apk
+					String oldName=a[0]+"_"+ver.getVersionNo()+"."+a[1];
+					//创建备份的文件夹
+					String old = oldPath+"/"+oldName;
+					File oldfiles = new File(oldPath);
+					if(!oldfiles.exists() && !oldfiles.mkdirs()){
+						oldfiles.mkdirs();
+					}
+					//文件复制
+					FileInputStream fin = new FileInputStream(new File(basePath));
+					FileOutputStream fout = new FileOutputStream(new File(old));
+					int bytesRead; 
+			        byte[] buf = new byte[4 * 1024];  // 4K 
+			        while ((bytesRead = fin.read(buf)) != -1) { 
+			            fout.write(buf, 0, bytesRead); 
+			        } 
+			        fout.flush(); 
+			        fout.close(); 
+			        fin.close();
+			        //ios客户端，创建plist方法 
+			        if(apptype.equals("Ios")|| apptype.equals("ios")){
+						String ipa =oldPath+"/"+oldName;
+						createplist(oldPath,ipa,ver.getVersionNo(),"_"+ver.getVersionNo(),request);
+					}
+			        //更新老板数据
+			        ver.setFilename(oldName);
+			        ver.setFilepath("file"+oldPath.split("file")[1]+"/"+oldName);
+			        appManagerDao.updateVsersion(ver);
+				}
+				
+				//上传最新版本
 				File files = new File(basePath);
 				if(!files.exists() && !files.mkdirs()){
 					files.mkdirs();
@@ -205,17 +264,21 @@ public class AppManagerServiceImpl implements AppManagerService{
 			}
 		}
 		
+		//生成二维码
+		String qrcode="";
 		if("Ios".equals(apptype)||"ios".equals(apptype)){
-			//创建plist方法
+			//ios，创建plist方法
 			String ipa =appFiles_url+"/"+filePath;
-			createplist(path,ipa,version,request);
-			qr=appupload_url+"download/app.action?nums="+nums+"&appFiles_url="+appFiles_url+"&apptype="+apptype;
+			createplist(path,ipa,version,"",request);
+			qr=appupload_url+"download/app.action?appFiles_url="+appFiles_url+"&apptype="+apptype;
+			
+			qrcode = QRCodeUtil.encode(qr, "",upload_url, true,apptype,vstatus);
 		}else{
 			String app_url = upload_url+"/"+filePath;
 			qr =appupload_url+"download/androidApp.action?app_url="+app_url+"&apptype="+apptype;
+			qrcode = QRCodeUtil.encode(qr, "",upload_url, true,apptype,vstatus);
 		}
-		//生成二维码
-		String qrcode = QRCodeUtil.encode(qr, "",upload_url, true);
+		
 		
 		//dao判断
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -224,21 +287,6 @@ public class AppManagerServiceImpl implements AppManagerService{
 		params.put("vstatus", vstatus);
 		VersionInfoBean info = appManagerDao.isExistVersion(params);
 		if(info!=null){
-			File fl =new File(upload_url+"/"+info.getQrCode());
-			if(fl.isFile() && fl.exists()){
-				fl.delete();
-			}
-			if(!(StringUtils.isNullOrEmpty(filePath)) && !(StringUtils.isNullOrEmpty(info.getFilepath()))){
-				File f2 =new File(upload_url+"/"+info.getFilepath());
-				File f3 =new File(f2.getParentFile().toString()+"/"+"stars.plist");
-				if(f2.isFile() && f2.exists()){
-					f2.delete();
-				}
-				if(f3.isFile() && f3.exists()){
-					f3.delete();
-				}
-				f2.getParentFile().delete();
-			}
 			info.setCreateTime(ff.format(date));
 			info.setFilename(fileName);
 			info.setFilepath(filePath);
@@ -259,6 +307,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		}
 		return result;
 	}
+	
 	/**
 	 * 获取app应用list
 	 */
@@ -305,22 +354,23 @@ public class AppManagerServiceImpl implements AppManagerService{
 	 * 下载方法
 	 */
 	@Override
-	public VersionInfoBean downloadFile(String code, String type, String status) {
+	public VersionInfoBean downloadFile(String code, String type,String version, String status) {
 		String appid = appManagerDao.getAppId(code,type);
-		int flag=0;
-		if("beta".equals(status)){
-			flag=0;
-		}else if("release".equals(status)){
-			flag=1;
+		int vstatus=0;
+		if("0".equals(status)){
+			vstatus=0;
+		}else if("1".equals(status)){
+			vstatus=1;
 		}
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("appid", appid);
-		params.put("appcode", flag);
+		params.put("vstatus", vstatus);
+		params.put("version", version);
 		VersionInfoBean versionInfoBean= appManagerDao.getNewVersionInfo(params);
 		return versionInfoBean;
 	}
 	/**
-	 * 获取最新版本信息
+	 * 版本检测，获取最新的版本
 	 */
 	@Override
 	public String getVersionInfo(String clientName, String clientVersion,String systemType, String appCode) {
@@ -348,8 +398,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
 			if(versionInfoBean!=null){
 				if("Ios".equals(systemType)||"ios".equals(systemType)){
-					String[] ss = versionInfoBean.getFilepath().split("/");
-					String url =appupload_url+"download/app.action?nums="+ss[1]+"&appFiles_url="+appFiles_url;
+					String url =appupload_url+"download/app.action?appFiles_url="+appFiles_url;
 					r_versionInfo.setUrl(url);
 				}else{
 					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
@@ -398,9 +447,14 @@ public class AppManagerServiceImpl implements AppManagerService{
 	}
 	
 	//生成plist文件方法
-	public void createplist(String iosfile,String ipapath, String version, HttpServletRequest request){
+	public void createplist(String iosfile,String ipapath, String version, String oldVersionNo,HttpServletRequest request){
 		log.info("创建plist文件开始");
-		String path = iosfile+"/"+"stars.plist";
+		File file = new File(iosfile);
+		if(!file.exists() && !file.mkdirs()){
+			file.mkdirs();
+		}
+		
+		String path = iosfile+"/"+"stars"+oldVersionNo+".plist";
 		FileOutputStream fos = null;
 		try {
 			// 创建文档类型

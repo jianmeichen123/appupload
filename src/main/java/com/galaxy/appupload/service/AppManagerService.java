@@ -33,9 +33,10 @@ public interface AppManagerService {
 	 * @param version 
 	 * @param type 
 	 * @param code 
+	 * @param status 
 	 * @return
 	 */
-	public VersionInfoBean downloadFile(String code, String type, String version);
+	public VersionInfoBean downloadFile(String code, String type, String version, String status);
 	/**
 	 * 获取app应用list
 	 * @return

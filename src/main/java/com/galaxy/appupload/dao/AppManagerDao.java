@@ -94,6 +94,13 @@ public interface AppManagerDao {
 	 * @return
 	 */
 	public VersionInfoBean getCheckVersionInfo(Map<String, Object> params);
+	/**
+	 * 通过文件名获取版本信息
+	 * @param fileName
+	 * @param vstatus 
+	 * @return
+	 */
+	public VersionInfoBean getVersionInfo(Map<String, Object> params);
 	
 
 }
