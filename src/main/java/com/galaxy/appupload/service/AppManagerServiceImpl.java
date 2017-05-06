@@ -195,19 +195,21 @@ public class AppManagerServiceImpl implements AppManagerService{
 				//判断类型,之前上传的版本备份的路径
 				if(apptype.equals("Android")||apptype.equals("android")){
 					if(vstatus==0){
-						path = upload_url+"/file"+"/bate";
+						path = upload_url+"/file/bate";
 						oldPath = upload_url+"/file/android/bate";
 					}else{
-						path = upload_url+"/file"+"/release";
-						oldPath = upload_url+"/file"+"/android/release";
+						path = upload_url+"/file/release";
+						oldPath = upload_url+"/file/android/release";
 					}
 					
 				}else{
 					if(vstatus==0){
-						path = upload_url+"/file"+"/bate";
+						appFiles_url=appFiles_url+"/file/bate/";
+						path = upload_url+"/file/bate";
 						oldPath = upload_url+"/file/ios/bate";
 					}else{
-						path = upload_url+"/file"+"/release";
+						appFiles_url=appFiles_url+"/file/release/";
+						path = upload_url+"/file/release";
 						oldPath = upload_url+"/file/ios/release";
 					}
 				}
@@ -271,7 +273,6 @@ public class AppManagerServiceImpl implements AppManagerService{
 			String ipa =appFiles_url+"/"+filePath;
 			createplist(path,ipa,version,"",request);
 			qr=appupload_url+"download/app.action?appFiles_url="+appFiles_url+"&apptype="+apptype;
-			
 			qrcode = QRCodeUtil.encode(qr, "",upload_url, true,apptype,vstatus);
 		}else{
 			String app_url = upload_url+"/"+filePath;
@@ -398,7 +399,8 @@ public class AppManagerServiceImpl implements AppManagerService{
 			VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
 			if(versionInfoBean!=null){
 				if("Ios".equals(systemType)||"ios".equals(systemType)){
-					String url =appupload_url+"download/app.action?appFiles_url="+appFiles_url;
+					String plistPath = appFiles_url+"/"+versionInfoBean.getFilepath().split(versionInfoBean.getFilename())[0];
+					String url =appupload_url+"download/app.action?appFiles_url="+plistPath;
 					r_versionInfo.setUrl(url);
 				}else{
 					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
