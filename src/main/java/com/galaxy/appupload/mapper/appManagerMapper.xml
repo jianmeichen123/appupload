@@ -113,7 +113,7 @@
 	
 	<!-- 获取最新版本信息-->
 	<select id="getNewVersionInfo" parameterType="java.util.Map" resultType="VersionInfoBean" resultMap="newVersion">
-		SELECT * FROM versioninfo WHERE app_id=#{appid} and version_status=#{vstatus} and version_no=#{version};
+		SELECT * FROM versioninfo WHERE app_id=#{appid} and version_status=#{appcode} ORDER BY version_no desc LIMIT 1;
 	</select>
 	<resultMap type="VersionInfoBean" id="newVersion">
 		<id column="id" property="id"/>
@@ -125,6 +125,22 @@
 		<result column="app_id" property="appid"/>
 		<result column="qr_code" property="qrCode"/>
 	</resultMap>
+	
+	<!-- 根据版本号下载对应的版本信息-->
+	<select id="getVersionNoInfo" parameterType="java.util.Map" resultType="VersionInfoBean" resultMap="VersionNoInfo">
+		SELECT * FROM versioninfo WHERE app_id=#{appid} and version_status=#{vstatus} and version_no=#{version};
+	</select>
+	<resultMap type="VersionInfoBean" id="VersionNoInfo">
+		<id column="id" property="id"/>
+		<result column="version_no" property="versionNo"/>
+		<result column="create_time" property="createTime"></result>
+		<result column="file_name" property="filename"/>
+		<result column="file_path" property="filepath"/>
+		<result column="update_log" property="updatelog"/>
+		<result column="app_id" property="appid"/>
+		<result column="qr_code" property="qrCode"/>
+	</resultMap>
+	
 	
 	<!-- 获取版本号list-->
 	<select id="getVersionList" parameterType="string" resultType="VersionInfoBean" resultMap="versionListMap">

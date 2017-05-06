@@ -366,7 +366,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		params.put("appid", appid);
 		params.put("vstatus", vstatus);
 		params.put("version", version);
-		VersionInfoBean versionInfoBean= appManagerDao.getNewVersionInfo(params);
+		VersionInfoBean versionInfoBean= appManagerDao.getVersionNoInfo(params);
 		return versionInfoBean;
 	}
 	/**

@@ -101,6 +101,12 @@ public interface AppManagerDao {
 	 * @return
 	 */
 	public VersionInfoBean getVersionInfo(Map<String, Object> params);
+	/**
+	 * 根据版本号下载对应的版本
+	 * @param params
+	 * @return
+	 */
+	public VersionInfoBean getVersionNoInfo(Map<String, Object> params);
 	
 
 }
