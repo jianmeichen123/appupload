@@ -11,6 +11,12 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class CommonInterceptor extends HandlerInterceptorAdapter{
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler) throws Exception {
+    	
+    	//指定页面不缓存
+        response.setDateHeader("Expires", -1);//IE
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+    	
         //登录，版本检测，二维码下载action
     	String loginUrl="/login/userLogin";
     	String checkUrl="/appManager/checkVersion";
