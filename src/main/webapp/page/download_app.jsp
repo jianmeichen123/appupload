@@ -13,7 +13,9 @@
 	<%@include file="common/common.jsp" %>
 	
 	<script type="text/javascript">
-	    //判断当前手机类型，是Android还是ios
+	
+	(function(){
+		//判断当前手机类型，是Android还是ios
 	    if(tools.isAndroid){
 	    	if('${apptype}'=='android'||'${apptype}'=='Android'){
 	    		if(tools.isQQBrowser||isWeiXin()){
@@ -46,6 +48,14 @@
 	    		return false; 
 	    	} 
 	   }
+		
+		
+		
+	})();
+	
+	
+	
+	    
 	</script>
 </head>
 <body>
