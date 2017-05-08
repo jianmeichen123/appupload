@@ -16,7 +16,6 @@
 <body>
 	
 	<script type="text/javascript">
-		$(function(){
 			
 			function hello(){
 				//判断当前手机类型，是Android还是ios
@@ -47,13 +46,12 @@
 			
 			
 			
-			window.setTimeout(hello,200);
+			window.setTimeout(hello,500);
 			
 			
 			
 		    
 			
-		});
 	/*
 		function isWeiXin(){ 
 	    	var ua = window.navigator.userAgent.toLowerCase(); 
