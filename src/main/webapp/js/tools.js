@@ -16,7 +16,8 @@ var tools = {
 		isOpen: /(?:Opera Mini)/.test(UA),
 		isUC : /(?:UCWEB|UCBrowser)/.test(UA),
 		isPc : !$.isPhone && !$.isAndroid && !$.isSymbian,
-		
+		isWeiXin : /(?:MicroMessenger)/.test(UA)
+		//ua.match(/MicroMessenger/i) == 'micromessenger';
 };
 
 		

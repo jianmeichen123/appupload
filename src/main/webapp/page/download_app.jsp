@@ -21,7 +21,7 @@
 			//判断当前手机类型，是Android还是ios
 		    if(tools.isAndroid){
 		    	if('${apptype}'=='android'||'${apptype}'=='Android'){
-		    		if(tools.isQQBrowser||isWeiXin()){
+		    		if(tools.isQQBrowser||tools.isWeiXin){
 		    			document.location = path + "/android/masking?app_url=${app_url}";
 		    		}else{
 		    			document.location = path + "/android/success?app_url=${app_url}";
@@ -46,7 +46,7 @@
 		    
 			
 		});
-	
+	/*
 		function isWeiXin(){ 
 	    	var ua = window.navigator.userAgent.toLowerCase(); 
 	    	if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
@@ -54,7 +54,7 @@
 	    	}else{ 
 	    		return false; 
 	    	} 
-	   }
+	   }*/
 		
 	    
 	    
