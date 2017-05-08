@@ -235,7 +235,7 @@ public class AppManagerController {
 			response.setHeader("Content-Disposition", "attachment; filename=" + file.getName()); 
 			out = response.getOutputStream();
 			out.write(FileUtils.readFileToByteArray(file)); 
-			IOUtils.copy(new FileInputStream(file), response.getOutputStream());
+			//IOUtils.copy(new FileInputStream(file), response.getOutputStream());
 			out.flush();
 			log.info("文件下载地址转换成功");
 		}catch(Exception e){
