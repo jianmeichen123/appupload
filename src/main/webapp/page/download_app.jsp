@@ -31,7 +31,7 @@
 		    	}
 		    }else if(tools.isIOS){
 		    	alert("对不起，不支持该系统，请退出！");
-		    	if('${apptype}'=='ios'||'${apptype}'=='Ios'){
+		    	/*if('${apptype}'=='ios'||'${apptype}'=='Ios'){
 		    		if(tools.isSafari){
 				    	document.location = path + "/ios/download?appFiles_url=${appFiles_url}";
 				    }else{
@@ -39,7 +39,7 @@
 				    }
 		    	}else{
 		    		alert("对不起，此安装包仅支持Android系统，请退出！");
-		    	}
+		    	}*/
 		    }else{
 		    	alert("对不起，不支持该系统，请退出！");
 		    }
