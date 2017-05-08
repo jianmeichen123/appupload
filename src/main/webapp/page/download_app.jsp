@@ -11,10 +11,11 @@
 	
 	<title>下载页面</title>
 	<%@include file="common/common.jsp" %>
+
+</head>
+<body>
 	
 	<script type="text/javascript">
-	
-	(function(){
 		//判断当前手机类型，是Android还是ios
 	    if(tools.isAndroid){
 	    	if('${apptype}'=='android'||'${apptype}'=='Android'){
@@ -48,17 +49,6 @@
 	    		return false; 
 	    	} 
 	   }
-		
-		
-		
-	})();
-	
-	
-	
-	    
 	</script>
-</head>
-<body>
-	
 </body>
 </html>
