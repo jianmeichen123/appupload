@@ -17,7 +17,6 @@
 			//不是QQ浏览器或微信浏览器，就直接到安装成功页面
 			if(!(tools.isQQBrowser||isWeiXin())){
 		   		$("body div").hide();
-		   		alert(99);
 				window.location.href = path + "/android/success?app_url=${app_url}";
 				
 		    }
