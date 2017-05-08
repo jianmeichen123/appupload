@@ -43,18 +43,18 @@
 		    	alert("对不起，不支持该系统，请退出！");
 		    }
 			
-		    function isWeiXin(){ 
-		    	var ua = window.navigator.userAgent.toLowerCase(); 
-		    	if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
-		    		return true; 
-		    	}else{ 
-		    		return false; 
-		    	} 
-		   }
+		    
 			
 		});
 	
-	
+		function isWeiXin(){ 
+	    	var ua = window.navigator.userAgent.toLowerCase(); 
+	    	if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
+	    		return true; 
+	    	}else{ 
+	    		return false; 
+	    	} 
+	   }
 		
 	    
 	    
