@@ -53,8 +53,8 @@
 				$("#ifr_container").css("height",clientHeight);
 				
 				//设置箭头部分
-				$("#img_guest").css("width",557);
-				$("#img_guest").css("height",1001);
+				$("#img_guest").css("width","90%");
+				$("#img_guest").css("height","90%");
 		    }
 		});
 	</script>
@@ -63,7 +63,7 @@
 	<div id="div_masking" style="position: absolute;background: url(${path}/img/beijing_2x.png);z-index: 1000;overflow: hidden;">
 		<img id="img_guest" alt="" src="${path }/img/zhixiang_3x.png" style="position: absolute;right: 50px;top: 30px;width: 220px;height: 400px;">
 		<div style="position: absolute;width: 100%;height: 80px;bottom: 100px;line-height: 80px;font-size: 36px;color: #fff;" align="center">
-			仅限：<img alt="" src="${path }/img/ios_2x.png"/>&nbsp;ios用户  
+			仅限：<img alt="" src="${path }/img/ios_2x.png"/>&nbsp;iOS用户  
 		</div>
 	</div>
 	

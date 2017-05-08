@@ -16,7 +16,7 @@
 	    			document.location = path + "/android/success?app_url=${app_url}";
 	    		}
 	    	}else{
-	    		alert("对不起,此安装包仅支持ios系统，请退出！");
+	    		alert("对不起，此安装包仅支持ios系统，请退出！");
 	    	}
 	    }else if(tools.isIOS){
 	    	if('${apptype}'=='ios'||'${apptype}'=='Ios'){
@@ -26,10 +26,10 @@
 			    	document.location = path + "/ios/masking?appFiles_url=${appFiles_url}";
 			    }
 	    	}else{
-	    		alert("对不起,此安装包仅支持Android系统，请退出！");
+	    		alert("对不起，此安装包仅支持Android系统，请退出！");
 	    	}
 	    }else{
-	    	alert("对不起,不支持该系统，请退出！");
+	    	alert("对不起，不支持该系统，请退出！");
 	    }
 	    
 	    function isWeiXin(){ 
