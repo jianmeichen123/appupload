@@ -37,7 +37,7 @@
 		    		alert("对不起，此安装包仅支持ios系统，请退出！");
 		    	}
 		    }else if(tools.isIOS){
-		    	if('${apptype}'=='ios'||'${apptype}'=='iOS'){
+		    	if('${apptype}'=='ios'||'${apptype}'=='Ios'){
 		    		if(tools.isSafari){
 				    	document.location = path + "/ios/download?appFiles_url=${appFiles_url}";
 				    }else{
