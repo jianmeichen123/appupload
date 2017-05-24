@@ -402,7 +402,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			if(versionInfoBean!=null){
 				if("Ios".equals(systemType)||"ios".equals(systemType)){
 					String plistPath = appFiles_url+"/"+versionInfoBean.getFilepath().split(versionInfoBean.getFilename())[0];
-					String url =appupload_url+"download/app.action?appFiles_url="+plistPath;
+					String url =appupload_url+"download/app.action?appFiles_url="+plistPath+"&apptype="+systemType;;
 					r_versionInfo.setUrl(url);
 				}else{
 					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
