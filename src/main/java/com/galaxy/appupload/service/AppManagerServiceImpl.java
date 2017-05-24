@@ -69,7 +69,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		String appcode = request.getParameter("appcode");
 		String systemType = request.getParameter("systemType");
 		if("0".equals(systemType)){
-			type="Ios";
+			type="iOS";
 		}else{
 			type="Android";
 		}
@@ -245,7 +245,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			        fout.close(); 
 			        fin.close();
 			        //ios客户端，创建plist方法 
-			        if(apptype.equals("Ios")|| apptype.equals("ios")){
+			        if(apptype.equals("iOS")|| apptype.equals("ios")){
 						String ipa =oldPath+"/"+oldName;
 						createplist(oldPath,ipa,ver.getVersionNo(),"_"+ver.getVersionNo(),request);
 					}
@@ -269,7 +269,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		
 		//生成二维码
 		String qrcode="";
-		if("Ios".equals(apptype)||"ios".equals(apptype)){
+		if("iOS".equals(apptype)||"ios".equals(apptype)){
 			//ios，创建plist方法
 			String ipa =appFiles_url+"/"+filePath;
 			createplist(path,ipa,version,"",request);
@@ -400,7 +400,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			params.put("versionNO", clientVersion);
 			VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
 			if(versionInfoBean!=null){
-				if("Ios".equals(systemType)||"ios".equals(systemType)){
+				if("iOS".equals(systemType)||"ios".equals(systemType)){
 					String plistPath = appFiles_url+"/"+versionInfoBean.getFilepath().split(versionInfoBean.getFilename())[0];
 					String url =appupload_url+"download/app.action?appFiles_url="+plistPath+"&apptype="+systemType;
 					r_versionInfo.setUrl(url);

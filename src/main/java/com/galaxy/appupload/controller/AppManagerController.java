@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -203,7 +202,7 @@ public class AppManagerController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		for(ApplicationInfoBean app :appList){
 			String id="0";
-			if("ios".equals(app.getSystemType())||"Ios".equals(app.getSystemType())){
+			if("ios".equals(app.getSystemType())||"iOS".equals(app.getSystemType())){
 				id=app.getId();
 				VersionInfoBean iosVersion = appManagerService.getNewVersionByStatus(id,status);
 				if(iosVersion!=null){
