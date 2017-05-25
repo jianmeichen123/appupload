@@ -43,7 +43,7 @@ height: 25px;
 				<td>
 					<select style="with: 120px;height: 25px;" name="systemType" id="systemType">
 						<option value="">请选择</option>
-						<option value="0">Ios</option>
+						<option value="0">iOS</option>
 						<option value="1">Android</option>
 					</select>
 					<span style="color:red;width:auto">*</span>
