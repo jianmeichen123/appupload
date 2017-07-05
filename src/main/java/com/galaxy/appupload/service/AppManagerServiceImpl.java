@@ -404,8 +404,9 @@ public class AppManagerServiceImpl implements AppManagerService{
 			VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
 			if(versionInfoBean!=null){
 				if("iOS".equals(systemType)||"ios".equals(systemType)){
-					String plistPath = appFiles_url+"/"+versionInfoBean.getFilepath().split(versionInfoBean.getFilename())[0];
-					String url =appupload_url+"download/app.action?appFiles_url="+plistPath+"&apptype="+systemType;;
+					//String plistPath = appFiles_url+"/"+versionInfoBean.getFilepath().split(versionInfoBean.getFilename())[0];
+					//String url =appupload_url+"download/app.action?appFiles_url="+plistPath+"&apptype="+systemType;
+					String url =appupload_url+"download/app.action?flag="+flag;
 					r_versionInfo.setUrl(url);
 				}else{
 					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
