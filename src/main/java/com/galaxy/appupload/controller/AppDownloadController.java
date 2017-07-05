@@ -33,9 +33,11 @@ public class AppDownloadController {
 	public String downloadApp(int flag,HttpServletRequest request){
 		String app_url="";
 		if(flag==0){
-			app_url =appFiles_url+"/file/bate/stars.ipa";
+			//app_url =appFiles_url+"/file/bate/stars.ipa";
+			app_url =appFiles_url+"/file/bate/";
 		}else{
-			app_url =appFiles_url+"/file/release/stars.ipa";
+			//app_url =appFiles_url+"/file/release/stars.ipa";
+			app_url =appFiles_url+"/file/release/";
 		}
 		
 		String apptype="iOS";
