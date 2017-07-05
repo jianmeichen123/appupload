@@ -165,6 +165,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		String fileName="";
 		int vstatus=0;
 		String qr="";
+		@SuppressWarnings("unused")
 		String plistPath ="";
 		
 		//从页面获取值
@@ -273,12 +274,14 @@ public class AppManagerServiceImpl implements AppManagerService{
 			//ios，创建plist方法
 			String ipa =appFiles_url+"/"+filePath;
 			createplist(path,ipa,version,"",request);
-			qr=appupload_url+"download/app.action?appFiles_url="+plistPath+"&apptype="+apptype;
+			//qr=appupload_url+"download/app.action?appFiles_url="+plistPath+"&apptype="+apptype;
+			qr=appupload_url+"download/app.action?flag="+vstatus;
 			
 			qrcode = QRCodeUtil.encode(qr, "",upload_url, true,apptype,vstatus);
 		}else{
-			String app_url = upload_url+"/"+filePath;
-			qr =appupload_url+"download/androidApp.action?app_url="+app_url+"&apptype="+apptype;
+			//String app_url = upload_url+"/"+filePath;
+			//qr =appupload_url+"download/androidApp.action?app_url="+app_url+"&apptype="+apptype;
+			qr =appupload_url+"download/androidApp.action?flag="+vstatus;
 			qrcode = QRCodeUtil.encode(qr, "",upload_url, true,apptype,vstatus);
 		}
 		

@@ -8,12 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.galaxy.appupload.beans.AppFileBean;
 import com.galaxy.appupload.service.IAppFileService;
+import com.galaxy.appupload.util.ReadProperties;
 
 @Controller
 @RequestMapping
 public class AppDownloadController {
 	@Autowired
 	private IAppFileService appFileService;
+	//获取路径
+	String upload_url = ReadProperties.getRescMap().get("upload_url");
+	String appupload_url = ReadProperties.getRescMap().get("appupload_url");
+	String appFiles_url = ReadProperties.getRescMap().get("appFiles_url");
 	
 	@RequestMapping("/index")
 	public String index(){
@@ -25,8 +30,16 @@ public class AppDownloadController {
 	}
 	//ios
 	@RequestMapping("/download/app")
-	public String downloadApp(String appFiles_url,String apptype,HttpServletRequest request){
-		request.setAttribute("appFiles_url", appFiles_url);
+	public String downloadApp(int flag,HttpServletRequest request){
+		String app_url="";
+		if(flag==0){
+			app_url =appFiles_url+"/file/bate/stars.ipa";
+		}else{
+			app_url =appFiles_url+"/file/release/stars.ipa";
+		}
+		
+		String apptype="iOS";
+		request.setAttribute("appFiles_url", app_url);
 		request.setAttribute("apptype", apptype);
 		return "download_app";
 	}
@@ -50,7 +63,15 @@ public class AppDownloadController {
 	
 	//android
 	@RequestMapping("/download/androidApp")
-	public String downloadAndroidApp(String app_url,String apptype,HttpServletRequest request){
+	public String downloadAndroidApp(int flag,HttpServletRequest request){
+		String app_url="";
+		if(flag==0){
+			app_url =upload_url+"/file/bate/stars.apk";
+		}else{
+			app_url =upload_url+"/file/release/stars.apk";
+		}
+		
+		String apptype="Android";
 		request.setAttribute("app_url", app_url);
 		request.setAttribute("apptype", apptype);
 		return "download_app";
