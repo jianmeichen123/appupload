@@ -28,18 +28,16 @@ public class AppDownloadController {
 		}
 		return "index";
 	}
+	
 	//ios
 	@RequestMapping("/download/app")
 	public String downloadApp(int flag,HttpServletRequest request){
 		String app_url="";
 		if(flag==0){
-			//app_url =appFiles_url+"/file/bate/stars.ipa";
 			app_url =appFiles_url+"/file/bate/";
 		}else{
-			//app_url =appFiles_url+"/file/release/stars.ipa";
 			app_url =appFiles_url+"/file/release/";
 		}
-		
 		String apptype="iOS";
 		request.setAttribute("appFiles_url", app_url);
 		request.setAttribute("apptype", apptype);
@@ -72,12 +70,12 @@ public class AppDownloadController {
 		}else{
 			app_url =upload_url+"/file/release/stars.apk";
 		}
-		
 		String apptype="Android";
 		request.setAttribute("app_url", app_url);
 		request.setAttribute("apptype", apptype);
 		return "download_app";
 	}
+	
 	@RequestMapping("/android/masking")
 	public String androidDownloadMasking(String app_url,HttpServletRequest request){
 		request.setAttribute("app_url", app_url);

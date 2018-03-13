@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,10 @@ import com.galaxy.appupload.util.RDataToJson;
 import com.galaxy.appupload.util.ReadProperties;
 import com.galaxy.appupload.util.Static_Commond;
 import com.galaxy.appupload.validData.ValidDataFormat;
+import com.tencent.xinge.Message;
+import com.tencent.xinge.MessageIOS;
+import com.tencent.xinge.TimeInterval;
+import com.tencent.xinge.XingeApp;
 
 @Controller
 @RequestMapping("/appManager")
@@ -96,6 +101,7 @@ public class AppManagerController {
 		return "appmanager/addVersion";
 		
 	}
+	
 	/**
 	 * 保存版本信息
 	 * @param versionInfoBean
@@ -116,6 +122,7 @@ public class AppManagerController {
 		return "redirect:/appManager/addVersion.action?flag="+flag;
 		
 	}
+	
 	/**
 	 * 下载页面
 	 * @param applicationInfoBean
@@ -161,6 +168,7 @@ public class AppManagerController {
 		List<VersionInfoBean> versionList = appManagerService.getSysVersion(appname,apptype,status);
 		return versionList;
 	}
+	
 	/**
 	 * 获取版本状态信息
 	 * @param appname
@@ -174,6 +182,7 @@ public class AppManagerController {
 		List<VersionInfoBean> versionList = appManagerService.getVerStatus(appname,apptype);
 		return versionList;
 	}
+	
 	/**
 	 * 获取二维码页面
 	 * @param request
@@ -219,8 +228,11 @@ public class AppManagerController {
 		return params;
 	}
 	
-	/*
+	/**
 	 * 二维码扫描下载方法
+	 * @param filePath
+	 * @param request
+	 * @param response
 	 */
 	@RequestMapping("/qrCodeDownload")
 	@ResponseBody
@@ -328,7 +340,13 @@ public class AppManagerController {
 		}
 	}
 	
-	//获取本地磁盘上的图片
+	/**
+	 * 获取本地磁盘上的图片
+	 * @param filepath
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
 	@RequestMapping("showImage")  
 	public void showImage(String filepath, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		InputStream inputStream = null;
@@ -391,5 +409,57 @@ public class AppManagerController {
 			} 
 		} 
 	}
+	
+	/**
+	 * 信鸽推送
+	 * @param filepath
+	 * @param request
+	 * @param response
+	 * @return 
+	 */
+	@SuppressWarnings("static-access")
+	@RequestMapping("/xgPush")
+	@ResponseBody
+	public boolean xgPush(String type,String status,String pushInfo,HttpServletRequest request,HttpServletResponse response){
+		XingeApp xinge = null;
+		JSONObject ret=null;
+		try {
+			if(type.equals("iOS")){
+				Long accessId=Long.parseLong(ReadProperties.getRescMap().get("ios_accessId"));
+				String secretKey=ReadProperties.getRescMap().get("ios_secretKey");
+				xinge = new XingeApp(accessId, secretKey);
+				int opt=0;
+				if(status.equals("0")){
+					opt=xinge.IOSENV_DEV;
+				}else if(status.equals("1")){
+					opt=xinge.IOSENV_PROD;
+				}
+				MessageIOS message = new MessageIOS();
+			    message.setExpireTime(86400);
+			    message.setAlert(pushInfo);
+			    TimeInterval acceptTime1 = new TimeInterval(0, 0, 23, 59);
+			    message.addAcceptTime(acceptTime1);
+			    ret = xinge.pushAllDevice(0, message, opt);
+			}else if(type.equals("Android")){
+				//android
+				Long accessId=Long.parseLong(ReadProperties.getRescMap().get("android_accessId"));
+				String secretKey=ReadProperties.getRescMap().get("android_secretKey");
+				xinge = new XingeApp(accessId, secretKey);
+				Message message = new Message();
+			    message.setTitle("title");
+			    message.setContent(pushInfo);
+			    message.setType(2);
+			    message.setExpireTime(86400);
+			    ret = xinge.pushAllDevice(0, message);
+			}
+			if(ret.getInt("ret_code")==0){
+				return true;
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return false;
+	}
+	
 	
 }

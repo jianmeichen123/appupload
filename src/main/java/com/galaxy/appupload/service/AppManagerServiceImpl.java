@@ -383,7 +383,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 		String resp="";
 		int flag=0;
 		String dataValue="";
-		
+		String app_url="";
 		R_versionInfoBean r_versionInfo = new R_versionInfoBean();
 		List<R_versionInfoBean> versionlist = new ArrayList<R_versionInfoBean>();
 		
@@ -392,8 +392,10 @@ public class AppManagerServiceImpl implements AppManagerService{
 		if(!StringUtils.isNullOrEmpty(appid)){
 			if("beta".equals(appCode)){
 				flag=0;
+				app_url =appFiles_url+"/file/bate/";
 			}else if("release".equals(appCode)){
 				flag=1;
+				app_url =appFiles_url+"/file/release/";
 			}
 			
 			//执行dao
@@ -404,10 +406,10 @@ public class AppManagerServiceImpl implements AppManagerService{
 			VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
 			if(versionInfoBean!=null){
 				if("iOS".equals(systemType)||"ios".equals(systemType)){
-					//String plistPath = appFiles_url+"/"+versionInfoBean.getFilepath().split(versionInfoBean.getFilename())[0];
-					//String url =appupload_url+"download/app.action?appFiles_url="+plistPath+"&apptype="+systemType;
 					String url =appupload_url+"download/app.action?flag="+flag;
+					String iosUrl="itms-services://?action=download-manifest&url="+app_url+"stars.plist";
 					r_versionInfo.setUrl(url);
+					r_versionInfo.setIosUrl(iosUrl);
 				}else{
 					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
 				}

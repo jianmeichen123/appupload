@@ -42,7 +42,7 @@ height: 25px;
 	<hr>
 	<form id="fm" action="<%=request.getContextPath()%>/appManager/saveVersion" method="post" enctype="multipart/form-data">  
 	<input type="hidden" id="flag" name="flag" value="${flag}">
-		<table>
+		<table border="0">
 			<tr>
 				<td>应用名称：</td>
 				<td>
@@ -104,15 +104,29 @@ height: 25px;
 			<tr>	
 				<td>版本描述：</td>
 				<td>
-					<textarea rows="5" cols="40" name="describe" id="describe"></textarea>
+					<textarea rows="4" cols="40" name="describe" id="describe"></textarea>
 				</td>
 			</tr>
 			<tr style="height: 5px;"></tr>
 			<tr>
 				<td colspan="2">
-					<input type="button" value="提交" onclick="subForm()"/>
+					<input type="button" value="提交" onclick="subForm()"/>&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
+			<!-- <tr>	
+				<td>推送内容：</td>
+				<td>
+					<textarea rows="4" cols="40" name="pushInfo" id="pushInfo"></textarea>
+					<span style="color: red;width:auto">*</span>
+					<font color="red" id="pushinfo"></font>
+				</td>
+			</tr>
+			<tr style="height: 5px;"></tr>
+			<tr>
+				<td colspan="2">
+					<input type="button" value="推送" onclick="xgPush()"/>
+				</td>
+			</tr> -->
 		</table>
 	</form> 
 </body>
@@ -155,6 +169,8 @@ function sysType(){
 	        }
 	    });
 }
+
+// 提交
 function subForm(){
 	var nameflag = false;
 	var typeflag = false;
@@ -187,7 +203,7 @@ function subForm(){
 		typeflag = true;
 	}
 	if (status == "") {
-		$("#statusinfo").html("请选择一种版本类型");
+		$("#statusinfo").html("请选择一种版本状态");
 		statusflag = false;
 		return statusflag;
 	} else {
@@ -222,6 +238,66 @@ function subForm(){
 		fm.submit();
 	}
 	
+}
+// 信鸽推送
+function xgPush(){
+	var typeflag = false;
+	var statusflag = false;
+	var infoflag = false;
+	
+	var acceptImg = "<img src='<%=request.getContextPath()%>/img/accept.png'>";
+	
+	var type = $("#appType").val();
+	var status = $("#status").val();
+	var pushInfo = $("#pushInfo").val();
+	
+	if (type == "") {
+		$("#typeinfo").html("请选择一种版本类型");
+		typeflag = false;
+		return typeflag;
+	} else {
+		$("#typeinfo").html(acceptImg);
+		typeflag = true;
+	}
+	if (status == "") {
+		$("#statusinfo").html("请选择一种版本状态");
+		statusflag = false;
+		return statusflag;
+	} else {
+		$("#statusinfo").html(acceptImg);
+		statusflag = true;
+	}
+	if (pushInfo == "") {
+		$("#pushinfo").html("请输入推送内容");
+		infoflag = false;
+		return infoflag;
+	} else {
+		$("#pushinfo").html(acceptImg);
+		infoflag = true;
+	}
+	if(typeflag && statusflag && infoflag){
+		$.ajax({
+	        type: "post",
+	        dataType: "json",
+	        url: '<%=request.getContextPath()%>/appManager/xgPush.action',
+	        data: {
+	        		type:type,
+	        		status:status,
+	        		pushInfo:pushInfo
+	        	  },
+	        success: function (data) {
+	        	if(data){
+				    alert("推送成功");
+				}else{
+					alert("推送失败");
+				}
+	        },
+	        error:function(){
+	        	alert("网络错误，推送失败");
+	        }
+	    });
+	}
+	 
 }
 </script>
 
