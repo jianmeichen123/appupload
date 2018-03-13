@@ -406,11 +406,11 @@
    		</dependency>
    		
    		<!-- 信鸽推送 -->
-		<dependency>
+		<!-- <dependency>
 		  <groupId>com.galaxyinternet</groupId>
 		  <artifactId>xingePush</artifactId>
 		  <version>1.1.8</version>
-		</dependency>
+		</dependency> -->
    
 	</dependencies>
 
