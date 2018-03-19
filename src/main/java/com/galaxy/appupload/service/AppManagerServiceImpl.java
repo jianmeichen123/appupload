@@ -386,66 +386,57 @@ public class AppManagerServiceImpl implements AppManagerService{
 		String app_url="";
 		R_versionInfoBean r_versionInfo = new R_versionInfoBean();
 		List<R_versionInfoBean> versionlist = new ArrayList<R_versionInfoBean>();
-		try {
-			//获取appid
-			String appid = appManagerDao.getAppId(clientName,systemType);
-			if(!StringUtils.isNullOrEmpty(appid)){
-				if("beta".equals(appCode)){
-					flag=0;
-					app_url =appFiles_url+"/file/bate/";
-				}else if("release".equals(appCode)){
-					flag=1;
-					app_url =appFiles_url+"/file/release/";
-				}
-				
-				//执行dao
-				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("appid", appid);
-				params.put("appcode", flag);
-				params.put("versionNO", clientVersion);
-				VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
-				if(versionInfoBean!=null){
-					if(compareVersion(versionInfoBean.getVersionNo(),clientVersion)==1){
-						if("iOS".equals(systemType)||"ios".equals(systemType)){
-							String url =appupload_url+"download/app.action?flag="+flag;
-							String iosUrl="itms-services://?action=download-manifest&url="+app_url+"stars.plist";
-							r_versionInfo.setUrl(url);
-							r_versionInfo.setIosUrl(iosUrl);
-						}else{
-							r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
-						}
-						r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
-						r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
-					}
-					r_versionInfo.setNewVersion(versionInfoBean.getVersionNo());
-					
-					//gson转json
-					versionlist.add(r_versionInfo);
-					if(versionlist.size()>0){
-						dataValue = gson.toJson(versionlist);
-					}
-					// 获取消息json字符串
-					resp = Ifinte.getDataJson(Static_Commond.SUCCESS,  ReadProperties.getRescMap().get("success"),dataValue);
-					log.info("返回结果:"+resp);
-					return resp;
+		
+		//获取appid
+		String appid = appManagerDao.getAppId(clientName,systemType);
+		if(!StringUtils.isNullOrEmpty(appid)){
+			if("beta".equals(appCode)){
+				flag=0;
+				app_url =appFiles_url+"/file/bate/";
+			}else if("release".equals(appCode)){
+				flag=1;
+				app_url =appFiles_url+"/file/release/";
+			}
+			
+			//执行dao
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("appid", appid);
+			params.put("appcode", flag);
+			params.put("versionNO", clientVersion);
+			VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
+			if(versionInfoBean!=null){
+				if("iOS".equals(systemType)||"ios".equals(systemType)){
+					String url =appupload_url+"download/app.action?flag="+flag;
+					String iosUrl="itms-services://?action=download-manifest&url="+app_url+"stars.plist";
+					r_versionInfo.setUrl(url);
+					r_versionInfo.setIosUrl(iosUrl);
 				}else{
-					// 获取消息json字符串
-					resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
-					log.info("未查到相关版本信息，返回结果:"+resp);
-					return resp;
+					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
 				}
+				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
+				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
+				
+				//gson转json
+				versionlist.add(r_versionInfo);
+				if(versionlist.size()>0){
+					dataValue = gson.toJson(versionlist);
+				}
+				// 获取消息json字符串
+				resp = Ifinte.getDataJson(Static_Commond.SUCCESS,  ReadProperties.getRescMap().get("success"),dataValue);
+				log.info("返回结果:"+resp);
+				return resp;
 			}else{
 				// 获取消息json字符串
 				resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
 				log.info("未查到相关版本信息，返回结果:"+resp);
 				return resp;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		}else{
+			// 获取消息json字符串
+			resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
+			log.info("未查到相关版本信息，返回结果:"+resp);
+			return resp;
 		}
-		resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
-		log.info("未查到相关版本信息，返回结果:"+resp);
-		return resp;
 	}
 	
 	//随机生成n位随机数据
