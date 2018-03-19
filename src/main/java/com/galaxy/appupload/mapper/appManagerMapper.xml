@@ -194,7 +194,11 @@
 	
 	<!-- 版本检测接口获取最新版本信息-->
 	<select id="getCheckVersionInfo" parameterType="java.util.Map" resultType="VersionInfoBean" resultMap="checkVersion">
-		SELECT * FROM versioninfo WHERE version_no>#{versionNO} and app_id=#{appid} and version_status=#{appcode} ORDER BY version_no desc LIMIT 1;
+		SELECT * 
+		FROM versioninfo 
+		WHERE app_id=#{appid} 
+		and version_status=#{appcode} 
+		ORDER BY create_time desc LIMIT 1;
 	</select>
 	<resultMap type="VersionInfoBean" id="checkVersion">
 		<id column="id" property="id"/>

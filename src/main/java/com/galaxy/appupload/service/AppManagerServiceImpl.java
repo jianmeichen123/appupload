@@ -386,57 +386,66 @@ public class AppManagerServiceImpl implements AppManagerService{
 		String app_url="";
 		R_versionInfoBean r_versionInfo = new R_versionInfoBean();
 		List<R_versionInfoBean> versionlist = new ArrayList<R_versionInfoBean>();
-		
-		//获取appid
-		String appid = appManagerDao.getAppId(clientName,systemType);
-		if(!StringUtils.isNullOrEmpty(appid)){
-			if("beta".equals(appCode)){
-				flag=0;
-				app_url =appFiles_url+"/file/bate/";
-			}else if("release".equals(appCode)){
-				flag=1;
-				app_url =appFiles_url+"/file/release/";
-			}
-			
-			//执行dao
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("appid", appid);
-			params.put("appcode", flag);
-			params.put("versionNO", clientVersion);
-			VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
-			if(versionInfoBean!=null){
-				if("iOS".equals(systemType)||"ios".equals(systemType)){
-					String url =appupload_url+"download/app.action?flag="+flag;
-					String iosUrl="itms-services://?action=download-manifest&url="+app_url+"stars.plist";
-					r_versionInfo.setUrl(url);
-					r_versionInfo.setIosUrl(iosUrl);
-				}else{
-					r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
+		try {
+			//获取appid
+			String appid = appManagerDao.getAppId(clientName,systemType);
+			if(!StringUtils.isNullOrEmpty(appid)){
+				if("beta".equals(appCode)){
+					flag=0;
+					app_url =appFiles_url+"/file/bate/";
+				}else if("release".equals(appCode)){
+					flag=1;
+					app_url =appFiles_url+"/file/release/";
 				}
-				r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
-				r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
 				
-				//gson转json
-				versionlist.add(r_versionInfo);
-				if(versionlist.size()>0){
-					dataValue = gson.toJson(versionlist);
+				//执行dao
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("appid", appid);
+				params.put("appcode", flag);
+				params.put("versionNO", clientVersion);
+				VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
+				if(versionInfoBean!=null){
+					if(compareVersion(versionInfoBean.getVersionNo(),clientVersion)==1){
+						if("iOS".equals(systemType)||"ios".equals(systemType)){
+							String url =appupload_url+"download/app.action?flag="+flag;
+							String iosUrl="itms-services://?action=download-manifest&url="+app_url+"stars.plist";
+							r_versionInfo.setUrl(url);
+							r_versionInfo.setIosUrl(iosUrl);
+						}else{
+							r_versionInfo.setUrl(appFiles_url+"/"+versionInfoBean.getFilepath());
+						}
+						r_versionInfo.setClientVersion(versionInfoBean.getVersionNo());
+						r_versionInfo.setUpdateLog(versionInfoBean.getUpdatelog());
+					}
+					r_versionInfo.setNewVersion(versionInfoBean.getVersionNo());
+					
+					//gson转json
+					versionlist.add(r_versionInfo);
+					if(versionlist.size()>0){
+						dataValue = gson.toJson(versionlist);
+					}
+					// 获取消息json字符串
+					resp = Ifinte.getDataJson(Static_Commond.SUCCESS,  ReadProperties.getRescMap().get("success"),dataValue);
+					log.info("返回结果:"+resp);
+					return resp;
+				}else{
+					// 获取消息json字符串
+					resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
+					log.info("未查到相关版本信息，返回结果:"+resp);
+					return resp;
 				}
-				// 获取消息json字符串
-				resp = Ifinte.getDataJson(Static_Commond.SUCCESS,  ReadProperties.getRescMap().get("success"),dataValue);
-				log.info("返回结果:"+resp);
-				return resp;
 			}else{
 				// 获取消息json字符串
 				resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
 				log.info("未查到相关版本信息，返回结果:"+resp);
 				return resp;
 			}
-		}else{
-			// 获取消息json字符串
-			resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
-			log.info("未查到相关版本信息，返回结果:"+resp);
-			return resp;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		resp = Ifinte.getDataJson(Static_Commond.RESULTNULL,  ReadProperties.getRescMap().get("result_NULL"),"");
+		log.info("未查到相关版本信息，返回结果:"+resp);
+		return resp;
 	}
 	
 	//随机生成n位随机数据
@@ -568,5 +577,42 @@ public class AppManagerServiceImpl implements AppManagerService{
 		}
 		log.info("创建plist文件成功");
 	}
+	
+	public static int compareVersion(String version1, String version2) throws Exception {  
+		   
+		if (version1 == null || version2 == null) { 
+			throw new Exception("compareVersion error:illegal params."); 
+		} 
+		String[] versionArray1 = version1.split("\\.");//注意此处为正则匹配，不能用"."； 
+		for(int i = 0 ; i<versionArray1.length ; i++){ //如果位数只有一位则自动补零（防止出现一个是04，一个是5 直接以长度比较）
+			if(versionArray1[i].length() == 1){
+				versionArray1[i] = "0" + versionArray1[i];
+			}
+		}
+		String[] versionArray2 = version2.split("\\."); 
+		for(int i = 0 ; i<versionArray2.length ; i++){//如果位数只有一位则自动补零
+			if(versionArray2[i].length() == 1){
+				versionArray2[i] = "0" + versionArray2[i];
+			}
+		}
+		int idx = 0; 
+		int minLength = Math.min(versionArray1.length, versionArray2.length);//取最小长度值 
+		int diff = 0; 
+		while (idx < minLength 
+		&& (diff = versionArray1[idx].length() - versionArray2[idx].length()) == 0//先比较长度 
+		&& (diff = versionArray1[idx].compareTo(versionArray2[idx])) == 0) {//再比较字符 
+			++idx; 
+		} 
+		//如果已经分出大小，则直接返回，如果未分出大小，则再比较位数，有子版本的为大； 
+		diff = (diff != 0) ? diff : versionArray1.length - versionArray2.length; 
+		return diff; 
+	}
+	
+	public static void main(String[] args) throws Exception {
+		String aa = "1.9";
+		String bb = "1.10";
+		System.out.println(compareVersion(bb,aa));
+	}
+	
 	 
 }

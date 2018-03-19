@@ -5,6 +5,7 @@ public class R_versionInfoBean {
 	private String url;					//文件地址
 	private String updateLog;			//更新内容
 	private String iosUrl;				//ios 下载地址
+	private String newVersion;			//最新版本号
 	
 	public String getClientVersion() {
 		return clientVersion;
@@ -29,6 +30,12 @@ public class R_versionInfoBean {
 	}
 	public void setIosUrl(String iosUrl) {
 		this.iosUrl = iosUrl;
+	}
+	public String getNewVersion() {
+		return newVersion;
+	}
+	public void setNewVersion(String newVersion) {
+		this.newVersion = newVersion;
 	}
 	
 }
