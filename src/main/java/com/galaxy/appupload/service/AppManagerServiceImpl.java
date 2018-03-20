@@ -548,7 +548,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 			rootDictArrayDictDict.addContent(new Element("string")
 			.setText("software"));
 			rootDictArrayDictDict.addContent(new Element("key").setText("title"));
-			rootDictArrayDictDict.addContent(new Element("string").setText("繁星"));
+			rootDictArrayDictDict.addContent(new Element("string").setText("星河投"));
 			rootDictArrayDict.addContent(rootDictArrayDictDict);
 	
 			rootDictArray.addContent(rootDictArrayDict);

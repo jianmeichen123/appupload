@@ -95,6 +95,20 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>tm</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profile.id>tm</profile.id>
+
+				<log.moduleName>tdj</log.moduleName>
+				<log.base>D:\\logs</log.base>
+				<log.other.level>DEBUG</log.other.level>
+				<log.root.level>ERROR</log.root.level>
+			</properties>
+		</profile>
+		<profile>
 			<id>online</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
