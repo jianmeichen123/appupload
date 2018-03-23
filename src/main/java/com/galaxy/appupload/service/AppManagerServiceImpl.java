@@ -405,7 +405,7 @@ public class AppManagerServiceImpl implements AppManagerService{
 				params.put("versionNO", clientVersion);
 				VersionInfoBean versionInfoBean = appManagerDao.getCheckVersionInfo(params);
 				if(versionInfoBean!=null){
-					if(compareVersion(versionInfoBean.getVersionNo(),clientVersion)==1){
+					if(compareVersion(versionInfoBean.getVersionNo(),clientVersion)>=1){
 						if("iOS".equals(systemType)||"ios".equals(systemType)){
 							String url =appupload_url+"download/app.action?flag="+flag;
 							String iosUrl="itms-services://?action=download-manifest&url="+app_url+"stars.plist";
@@ -608,8 +608,8 @@ public class AppManagerServiceImpl implements AppManagerService{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String aa = "1.9";
-		String bb = "1.10";
+		String aa = "2.4.1.5";
+		String bb = "2.4.1.5";
 		System.out.println(compareVersion(bb,aa));
 	}
 	
