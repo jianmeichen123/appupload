@@ -420,11 +420,18 @@
    		</dependency>
    		
    		<!-- 信鸽推送 -->
-		<dependency>
+		<!-- <dependency>
 		  <groupId>com.galaxyinternet</groupId>
 		  <artifactId>xingePush</artifactId>
 		  <version>[1.0.0,)</version>
-		</dependency>
+		</dependency> -->
+		<dependency>
+	      <groupId>com.galaxyinternet</groupId>
+	      <artifactId>xingePush</artifactId>
+	      <version>1.0.4</version>
+	      <scope>system</scope>
+	      <systemPath>${project.basedir}/lib/xingePush-1.0.4.jar</systemPath>
+    	</dependency>
    
 	</dependencies>
 
